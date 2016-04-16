@@ -22,10 +22,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
+        <module name="GTB" />
         <module name="PO" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="GTB" target="1.5" />
       <module name="PO" target="1.5" />
     </bytecodeTargetLevel>
   </component>
