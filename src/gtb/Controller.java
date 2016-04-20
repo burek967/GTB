@@ -1,6 +1,8 @@
 package gtb;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
@@ -9,6 +11,12 @@ import javafx.stage.*;
 public class Controller {
 
     private Stage stage;
+
+    @FXML
+    private Canvas canvas;
+
+    public void initialize(){
+    }
 
     public void setStage(Stage s){
         stage = s;
