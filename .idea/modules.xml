@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/GTB.iml" filepath="$PROJECT_DIR$/GTB.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gtb.iml" filepath="$PROJECT_DIR$/gtb.iml" />
     </modules>
   </component>
 </project>
