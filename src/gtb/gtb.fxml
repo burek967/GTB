@@ -1,8 +1,84 @@
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.layout.GridPane?>
+<?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<GridPane fx:controller="gtb.Controller"
-          xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0"
+          xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gtb.Controller">
+    <columnConstraints>
+        <ColumnConstraints hgrow="NEVER" maxWidth="50.0" minWidth="50.0" prefWidth="50.0"/>
+        <ColumnConstraints/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints minHeight="25.0" prefHeight="25.0" vgrow="NEVER"/>
+        <RowConstraints/>
+    </rowConstraints>
+    <children>
+        <Separator orientation="VERTICAL" prefHeight="775.0" prefWidth="0.0" GridPane.columnIndex="1"
+                   GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.rowSpan="1" GridPane.vgrow="ALWAYS"/>
+        <Canvas fx:id="canvas" height="777.0" width="1231.0" GridPane.columnIndex="1" GridPane.columnSpan="1"
+                GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.rowSpan="1" GridPane.vgrow="ALWAYS"/>
+        <AnchorPane prefHeight="25.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS"
+                    GridPane.vgrow="NEVER">
+            <children>
+                <MenuBar prefHeight="25.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                         AnchorPane.topAnchor="0.0">
+                    <menus>
+                        <Menu mnemonicParsing="false" text="File">
+                            <items>
+                                <MenuItem mnemonicParsing="false" onAction="#closeEventHandler" text="Close"/>
+                            </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Edit">
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="Delete"/>
+                            </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Help">
+                            <items>
+                                <MenuItem mnemonicParsing="false" onAction="#showAboutWindow" text="About"/>
+                            </items>
+                        </Menu>
+                    </menus>
+                </MenuBar>
+            </children>
+        </AnchorPane>
+        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS" GridPane.hgrow="NEVER">
+            <children>
+                <VBox maxWidth="50.0" minWidth="50.0" prefHeight="775.0" prefWidth="50.0" AnchorPane.bottomAnchor="0.0"
+                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <children>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="40.0"
+                                prefWidth="40.0" text="V" textAlignment="CENTER">
+                            <opaqueInsets>
+                                <Insets/>
+                            </opaqueInsets>
+                            <VBox.margin>
+                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                            </VBox.margin>
+                        </Button>
+                        <MenuButton contentDisplay="CENTER" mnemonicParsing="false" popupSide="RIGHT" prefHeight="40.0"
+                                    prefWidth="40.0" text=" E" textAlignment="CENTER">
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="Directed Edge"/>
+                                <MenuItem mnemonicParsing="false" text="Undirected Edge"/>
+                            </items>
+                            <VBox.margin>
+                                <Insets bottom="5.0" left="5.0" right="5.0"/>
+                            </VBox.margin>
+                        </MenuButton>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="40.0"
+                                prefWidth="40.0" text="DEL" textAlignment="CENTER">
+                            <VBox.margin>
+                                <Insets bottom="5.0" left="5.0" right="5.0"/>
+                            </VBox.margin>
+                        </Button>
+                    </children>
+                </VBox>
+            </children>
+        </AnchorPane>
+    </children>
 </GridPane>
