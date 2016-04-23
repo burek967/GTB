@@ -1,4 +1,4 @@
-out/**/*.class
+out/*
 
 # User-specific stuff:
 .idea/workspace.xml

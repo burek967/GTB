@@ -1,25 +1,34 @@
-package gtb;
+package gtb.controller;
 
+import gtb.controller.mouse.MouseModes;
 import gtb.view.GraphRenderer;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
+import javafx.scene.control.RadioMenuItem;
+import javafx.scene.input.MouseDragEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.*;
 
 public class Controller {
 
     private Stage stage;
     private GraphRenderer renderer;
+    private MouseModes mode = MouseModes.MOVE;
 
     @FXML
     private Canvas canvas;
+    @FXML
+    private RadioMenuItem showDebugInfo;
 
     public void initialize(){
         renderer = new GraphRenderer(canvas);
-        renderer.redraw(null);
+        renderer.redraw();
     }
 
     public void setStage(Stage s){
@@ -35,7 +44,7 @@ public class Controller {
     public void resizeCanvas(double w, double h){
         canvas.setHeight(h);
         canvas.setWidth(w);
-        renderer.redraw(null);
+        renderer.redraw();
     }
 
     public void closeEventHandler(){
@@ -79,5 +88,29 @@ public class Controller {
                 "A wszystko przepasane jakby wstęgą, miedzą\n" +
                 "Zieloną, na niéj zrzadka ciche grusze siedzą.");
         d.showAndWait();
+    }
+
+    public void toggleDebugInfo(ActionEvent event) {
+        renderer.setDebugInfo(showDebugInfo.isSelected());
+    }
+
+    public void mouseOnCanvas(){
+        stage.getScene().setCursor(mode.getCursor());
+    }
+
+    public void mouseOutCanvas(){
+        stage.getScene().setCursor(Cursor.DEFAULT);
+    }
+
+    public void mouseOnCanvasDrag(MouseEvent event) {
+        mode.getHandlers().onDrag(event, renderer);
+    }
+
+    public void mouseOnCanvasPressed(MouseEvent event) {
+        mode.getHandlers().onPress(event, renderer);
+    }
+
+    public void mouseOnCanvasReleased(MouseEvent event) {
+        mode.getHandlers().onRelease(event, renderer);
     }
 }
