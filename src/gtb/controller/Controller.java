@@ -7,10 +7,7 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.RadioMenuItem;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.*;
@@ -25,6 +22,8 @@ public class Controller {
     private Canvas canvas;
     @FXML
     private RadioMenuItem showDebugInfo;
+    @FXML
+    private MenuBar menuBar;
 
     public void initialize(){
         renderer = new GraphRenderer(canvas);
@@ -34,10 +33,10 @@ public class Controller {
     public void setStage(Stage s){
         stage = s;
         stage.getScene().widthProperty().addListener((observable, oldValue, newValue) -> {
-            resizeCanvas(newValue.doubleValue()-55,stage.getScene().heightProperty().doubleValue()-25);
+            resizeCanvas(newValue.doubleValue()-55,stage.getScene().heightProperty().doubleValue()-menuBar.getHeight());
         });
         stage.getScene().heightProperty().addListener((observable, oldValue, newValue) -> {
-            resizeCanvas(stage.getScene().widthProperty().doubleValue()-55,newValue.doubleValue()-25);
+            resizeCanvas(stage.getScene().widthProperty().doubleValue()-55,newValue.doubleValue()-menuBar.getHeight());
         });
     }
 
