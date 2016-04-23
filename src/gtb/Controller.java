@@ -1,5 +1,6 @@
 package gtb;
 
+import gtb.view.GraphRenderer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
@@ -11,15 +12,30 @@ import javafx.stage.*;
 public class Controller {
 
     private Stage stage;
+    private GraphRenderer renderer;
 
     @FXML
     private Canvas canvas;
 
     public void initialize(){
+        renderer = new GraphRenderer(canvas);
+        renderer.redraw(null);
     }
 
     public void setStage(Stage s){
         stage = s;
+        stage.getScene().widthProperty().addListener((observable, oldValue, newValue) -> {
+            resizeCanvas(newValue.doubleValue()-55,stage.getScene().heightProperty().doubleValue()-25);
+        });
+        stage.getScene().heightProperty().addListener((observable, oldValue, newValue) -> {
+            resizeCanvas(stage.getScene().widthProperty().doubleValue()-55,newValue.doubleValue()-25);
+        });
+    }
+
+    public void resizeCanvas(double w, double h){
+        canvas.setHeight(h);
+        canvas.setWidth(w);
+        renderer.redraw(null);
     }
 
     public void closeEventHandler(){
