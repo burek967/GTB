@@ -1,17 +1,27 @@
 package gtb.view;
 
+import gtb.model.Edge;
+import gtb.model.Graph;
+import gtb.model.Position;
+import gtb.model.Vertex;
+import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Material;
 import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 
 public class GraphRenderer {
     private Canvas canvas;
     private GraphicsContext ctx;
+    private Graph graph;
     private int xOffset=0;
     private int yOffset=0;
     private double scale=1.0; // todo someday ;_;
     private boolean debugInfo=false;
+    
+    private static final float arrowSize = 15, vertexRadius = 20;
 
     public void changeOffset(int dx, int dy){
         xOffset -= dx;
@@ -22,6 +32,16 @@ public class GraphRenderer {
     public GraphRenderer(Canvas c){
         canvas = c;
         ctx = canvas.getGraphicsContext2D();
+        graph = new Graph();
+        Vertex v1 = graph.addVertex();
+        v1.getData().setPosition(new Position(150, 100));
+        Vertex v2 = graph.addVertex();
+        v2.getData().setPosition(new Position(220, 350));
+        Vertex v3 = graph.addVertex();
+        v3.getData().setPosition(new Position(70, 220));
+        graph.addDirectedEdge(v1, v2);
+        graph.addDirectedEdge(v2, v3);
+        graph.addDirectedEdge(v3, v1);
     }
 
     public void setDebugInfo(boolean b){
@@ -39,13 +59,7 @@ public class GraphRenderer {
 
     public void redraw(){
         ctx.clearRect(0,0,canvas.getWidth(),canvas.getHeight());
-        ctx.setFill(Color.RED);
-        rect(0,0,10,10);
-        rect(canvas.getWidth()-10,0,10,10);
-        rect(canvas.getWidth()-10,canvas.getHeight()-10,10,10);
-        rect(0,canvas.getHeight()-10,10,10);
-        line(0,0,canvas.getWidth(),canvas.getHeight());
-        line(0,canvas.getHeight(),canvas.getWidth(),0);
+        drawGraph();
 
         if(debugInfo) {
             ctx.setFont(Font.font("DejaVu Sans Mono",15.0));
@@ -56,5 +70,55 @@ public class GraphRenderer {
             sb.append("yOffset: ").append(yOffset).append('\n');
             ctx.fillText(sb.toString(), 20, canvas.getHeight() - 50);
         }
+    }
+
+    private void drawGraph() {
+        ctx.setFont(Font.font("DejaVu Sans Mono",13.0));
+        ctx.setTextAlign(TextAlignment.CENTER);
+        ctx.setTextBaseline(VPos.CENTER);
+        graph.getVertices().forEach(this::drawVertex);
+        graph.getEdges().forEach(this::drawEdge);
+    }
+
+    private void drawEdge(Edge e) {
+        ctx.setStroke(Color.GREEN);
+        Position p1 = e.getFirstVertex().getData().getPosition();
+        Position p2 = e.getSecondVertex().getData().getPosition();
+        float p1x = p1.getX()+xOffset, p1y = p1.getY()+yOffset, p2x = p2.getX()+xOffset, p2y = p2.getY()+yOffset;
+        float dx = p2x-p1x;
+        float dy = p2y-p1y;
+        float d = (float)Math.sqrt(dx*dx+dy*dy);
+        ctx.strokeLine(p1x+vertexRadius*dx/d, p1y+vertexRadius*dy/d,
+                p2x-vertexRadius*dx/d, p2y-vertexRadius*dy/d);
+        if(e.isDirected()) {
+            ctx.setFill(Color.GREEN);
+            double xp = -arrowSize*dx/d;
+            double yp = -arrowSize*dy/d;
+            double ypp = Math.sqrt(arrowSize*arrowSize*xp*xp/(yp*yp+xp*xp)*0.25);
+            double xpp = ypp*yp/xp;
+            double[] ptx = new double[] {
+                    p2x-vertexRadius*dx/d,
+                    p2x-vertexRadius*dx/d+xp+xpp,
+                    p2x-vertexRadius*dx/d+xp-xpp
+            };
+            double[] pty = new double[] {
+                    p2y-vertexRadius*dy/d,
+                    p2y-vertexRadius*dy/d+yp-ypp,
+                    p2y-vertexRadius*dy/d+yp+ypp
+            };
+
+            ctx.fillPolygon(ptx, pty, 3);
+        }
+    }
+
+    private void drawVertex(Vertex v) {
+        ctx.setFill(Color.GREENYELLOW);
+        Position p = v.getData().getPosition();
+        float x = p.getX()+xOffset, y = p.getY()+yOffset;
+        ctx.fillOval(x-vertexRadius, y-vertexRadius, 2*vertexRadius, 2*vertexRadius);
+        ctx.setStroke(Color.GREEN);
+        ctx.strokeOval(x-vertexRadius, y-vertexRadius, 2*vertexRadius, 2*vertexRadius);
+        ctx.setFill(Color.BLACK);
+        ctx.fillText(String.valueOf(v.getData().getId()), x, y);
     }
 }
