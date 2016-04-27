@@ -1,6 +1,7 @@
 package gtb.controller;
 
 import gtb.controller.mouse.MouseModes;
+import gtb.model.Graph;
 import gtb.view.GraphRenderer;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -15,6 +16,7 @@ public class Controller {
 
     private Stage stage;
     private GraphRenderer renderer;
+    private Graph graph;
     private MouseModes mode = MouseModes.MOVE;
 
     @FXML
@@ -25,7 +27,8 @@ public class Controller {
     private MenuBar menuBar;
 
     public void initialize(){
-        renderer = new GraphRenderer(canvas);
+        graph = new Graph();
+        renderer = new GraphRenderer(canvas, graph);
         renderer.redraw();
     }
 
@@ -88,6 +91,18 @@ public class Controller {
         d.showAndWait();
     }
 
+    public void onNewVertexButton() {
+        mode = MouseModes.ADD_VERTEX;
+    }
+
+    public void onNewDirectedEdgeButton() {
+        mode = MouseModes.ADD_DIRECTED_EDGE;
+    }
+
+    public void onNewUndirectedEdgeButton() {
+        mode = MouseModes.ADD_UNDIRECTED_EDGE;
+    }
+
     public void toggleDebugInfo() {
         renderer.setDebugInfo(showDebugInfo.isSelected());
     }
@@ -101,15 +116,15 @@ public class Controller {
     }
 
     public void mouseOnCanvasDrag(MouseEvent event) {
-        mode.getHandlers().onDrag(event, renderer);
+        mode.getHandlers().onDrag(event, renderer, graph);
     }
 
     public void mouseOnCanvasPressed(MouseEvent event) {
-        mode.getHandlers().onPress(event, renderer);
+        mode.getHandlers().onPress(event, renderer, graph);
     }
 
     public void mouseOnCanvasReleased(MouseEvent event) {
-        mode.getHandlers().onRelease(event, renderer);
+        mode.getHandlers().onRelease(event, renderer, graph);
     }
 
     public void mouseOnScroll(ScrollEvent event) {

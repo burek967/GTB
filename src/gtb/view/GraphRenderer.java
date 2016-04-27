@@ -4,6 +4,7 @@ import gtb.model.Edge;
 import gtb.model.Graph;
 import gtb.model.Position;
 import gtb.model.Vertex;
+import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -40,19 +41,10 @@ public class GraphRenderer {
         redraw();
     }
 
-    public GraphRenderer(Canvas c){
+    public GraphRenderer(Canvas c, Graph graph){
         canvas = c;
         ctx = canvas.getGraphicsContext2D();
-        graph = new Graph();
-        Vertex v1 = graph.addVertex();
-        v1.getData().setPosition(new Position(150, 100));
-        Vertex v2 = graph.addVertex();
-        v2.getData().setPosition(new Position(220, 350));
-        Vertex v3 = graph.addVertex();
-        v3.getData().setPosition(new Position(70, 220));
-        graph.addDirectedEdge(v1, v2);
-        graph.addDirectedEdge(v2, v3);
-        graph.addDirectedEdge(v3, v1);
+        this.graph = graph;
     }
 
     public void setDebugInfo(boolean b){
@@ -137,5 +129,29 @@ public class GraphRenderer {
         ctx.strokeOval(x-r, y-r, 2*r, 2*r);
         ctx.setFill(Color.BLACK);
         ctx.fillText(String.valueOf(v.getData().getId()), x, y);
+    }
+
+    /**
+     * Converts mouse / screen position to model position
+     */
+    //TODO: WZIĄĆ POD UWAGĘ SKALOWANIE! WSZĘDZIE!
+    public Position getPositionAt(Position p) {
+        return new Position(p.getX()-xOffset, p.getY()-yOffset);
+    }
+
+    /**
+     * Get vertex at mouse/screen position p
+     * Returns null if no vertex
+     */
+    public Vertex getVertexAt(Position p) {
+        p = getPositionAt(p);
+        for (Vertex v: graph.getVertices()) {
+            Position pv = v.getData().getPosition();
+            float dx = p.getX()-pv.getX();
+            float dy = p.getY()-pv.getY();
+            if(dx*dx+dy*dy <= vertexRadius*vertexRadius)
+                return v;
+        }
+        return null;
     }
 }
