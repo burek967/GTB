@@ -22,7 +22,7 @@ public class GraphTest {
         }
         for(int i = 0; i < 5; ++i) {
             Edge e = g.addDirectedEdge(v[i], v[(i + 1) % 5]);
-            assertEquals(i+5, e.getData().getId());
+            assertEquals(i, e.getData().getId());
         }
         assertEquals(5, g.getVertices().size());
         assertEquals(5, g.getEdges().size());

@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 public class Graph {
     private List<Vertex> vertices;
     private List<Edge> edges;
-    private int lastId = 0;
+    private int lastVertexId = 0, lastEdgeId = 0;
 
     public Graph() {
         vertices = new ArrayList<>();
@@ -19,19 +19,19 @@ public class Graph {
     }
 
     public void addVertex(Vertex v) {
-        v.getData().setId(lastId++);
+        v.getData().setId(lastVertexId++);
         vertices.add(v);
     }
 
     public Vertex addVertex() {
         Vertex v = new Vertex();
-        v.getData().setId(lastId++);
+        v.getData().setId(lastVertexId++);
         vertices.add(v);
         return v;
     }
 
     public void addEdge(Edge e) {
-        e.getData().setId(lastId++);
+        e.getData().setId(lastEdgeId++);
         edges.add(e);
     }
 
