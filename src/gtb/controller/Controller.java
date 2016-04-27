@@ -91,6 +91,10 @@ public class Controller {
         d.showAndWait();
     }
 
+    public void onMoveButton() {
+        mode = MouseModes.MOVE;
+    }
+
     public void onNewVertexButton() {
         mode = MouseModes.ADD_VERTEX;
     }

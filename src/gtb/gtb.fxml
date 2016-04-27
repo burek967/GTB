@@ -21,15 +21,20 @@
           <children>
               <VBox maxWidth="50.0" minWidth="50.0" prefHeight="775.0" prefWidth="50.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                  <children>
+                  <Button mnemonicParsing="false" onAction="#onMoveButton" prefHeight="40.0" prefWidth="40.0" text="+">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </VBox.margin>
+                  </Button>
                      <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onNewVertexButton" prefHeight="40.0" prefWidth="40.0" text="V" textAlignment="CENTER">
                          <opaqueInsets>
                              <Insets />
                          </opaqueInsets>
                          <VBox.margin>
-                             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                             <Insets bottom="5.0" left="5.0" right="5.0" />
                          </VBox.margin>
                      </Button>
-                     <MenuButton contentDisplay="CENTER" mnemonicParsing="false" popupSide="RIGHT" prefHeight="40.0" prefWidth="40.0" text=" E" textAlignment="CENTER">
+                     <MenuButton contentDisplay="CENTER" maxWidth="40.0" mnemonicParsing="false" popupSide="RIGHT" prefHeight="40.0" prefWidth="40.0" text=" E" textAlignment="CENTER">
                          <items>
                              <MenuItem mnemonicParsing="false" onAction="#onNewDirectedEdgeButton" text="Directed Edge" />
                              <MenuItem mnemonicParsing="false" onAction="#onNewUndirectedEdgeButton" text="Undirected Edge" />
