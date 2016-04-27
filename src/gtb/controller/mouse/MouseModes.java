@@ -5,8 +5,8 @@ import javafx.scene.Cursor;
 public enum MouseModes {
     MOVE(Cursor.MOVE, new MoveMode()),
     ADD_VERTEX(Cursor.DEFAULT, new NewVertexMode()),
-    ADD_DIRECTED_EDGE(Cursor.DEFAULT, new NewDirectedEdgeMode()),
-    ADD_UNDIRECTED_EDGE(Cursor.DEFAULT, new NewUndirectedEdgeMode()),
+    ADD_DIRECTED_EDGE(Cursor.DEFAULT, new NewEdgeMode(true)),
+    ADD_UNDIRECTED_EDGE(Cursor.DEFAULT, new NewEdgeMode(false)),
     REMOVE(Cursor.CROSSHAIR, null);
 
     private Cursor cursor;

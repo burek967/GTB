@@ -4,13 +4,16 @@ import gtb.controller.mouse.MouseModes;
 import gtb.model.Graph;
 import gtb.view.GraphRenderer;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
-import javafx.scene.input.*;
-import javafx.stage.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class Controller {
 

@@ -4,12 +4,10 @@ import gtb.model.Edge;
 import gtb.model.Graph;
 import gtb.model.Position;
 import gtb.model.Vertex;
-import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Material;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 

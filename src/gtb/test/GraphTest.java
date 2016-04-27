@@ -4,6 +4,7 @@ import gtb.model.Edge;
 import gtb.model.Graph;
 import gtb.model.Vertex;
 import org.junit.Test;
+
 import static org.junit.Assert.assertEquals;
 
 /**

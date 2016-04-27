@@ -10,8 +10,13 @@ import javafx.scene.input.ScrollEvent;
 /**
  * Created by angela on 4/27/16.
  */
-public class NewUndirectedEdgeMode implements MouseMode {
+public class NewEdgeMode implements MouseMode{
     private Vertex v1;
+    private boolean directed = false;
+
+    public NewEdgeMode(boolean directed) {
+        this.directed = directed;
+    }
 
     @Override
     public void onPress(MouseEvent event, GraphRenderer renderer, Graph graph) {
@@ -26,7 +31,10 @@ public class NewUndirectedEdgeMode implements MouseMode {
             v1 = v;
             return;
         }
-        graph.addUndirectedEdge(v1, v);
+        if(directed)
+            graph.addDirectedEdge(v1, v);
+        else
+            graph.addUndirectedEdge(v1, v);
         v1 = null;
         renderer.redraw();
     }
