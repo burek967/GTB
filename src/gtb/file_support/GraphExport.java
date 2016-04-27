@@ -10,7 +10,7 @@ import java.util.List;
  */
 
 public class GraphExport {
-    static boolean GraphExport(Graph G, String path){
+    static boolean graphExport(Graph G, String path){
         List<Vertex> vertices = G.getVertices();
         List<Edge> edges = G.getEdges();
         PrintWriter writer;
