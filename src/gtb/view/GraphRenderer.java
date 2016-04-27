@@ -17,7 +17,7 @@ public class GraphRenderer {
     private Graph graph;
     private int xOffset=0;
     private int yOffset=0;
-    private double scale=1.0;
+    private float scale=1.0f;
     private boolean debugInfo=false;
     
     private static final float arrowSize = 15, vertexRadius = 20;
@@ -88,12 +88,13 @@ public class GraphRenderer {
         ctx.setStroke(Color.GREEN);
         Position p1 = e.getFirstVertex().getData().getPosition();
         Position p2 = e.getSecondVertex().getData().getPosition();
-        float p1x = (float)scale*p1.getX()+xOffset, p1y = (float)scale*p1.getY()+yOffset, p2x = (float)scale*p2.getX()+xOffset, p2y = (float)scale*p2.getY()+yOffset;
+        float p1x = scale*p1.getX()+xOffset, p1y = scale*p1.getY()+yOffset,
+                p2x = scale*p2.getX()+xOffset, p2y = scale*p2.getY()+yOffset;
         float dx = p2x-p1x;
         float dy = p2y-p1y;
         float d = (float)Math.sqrt(dx*dx+dy*dy);
-        float r = (float) scale * vertexRadius;
-        float arr = (float) Math.min(scale,1.5f) * arrowSize;
+        float r = scale * vertexRadius;
+        float arr = Math.min(scale,1.5f) * arrowSize;
         ctx.strokeLine(p1x+r*dx/d, p1y+r*dy/d,
                 p2x-r*dx/d, p2y-r*dy/d);
         if(e.isDirected()) {
@@ -120,8 +121,8 @@ public class GraphRenderer {
     private void drawVertex(Vertex v) {
         ctx.setFill(Color.GREENYELLOW);
         Position p = v.getData().getPosition();
-        float r = (float) scale * vertexRadius;
-        float x = (float) scale*p.getX()+xOffset, y = (float) scale*p.getY()+yOffset;
+        float r = scale * vertexRadius;
+        float x = scale*p.getX()+xOffset, y = scale*p.getY()+yOffset;
         ctx.fillOval(x-r, y-r, 2*r, 2*r);
         ctx.setStroke(Color.GREEN);
         ctx.strokeOval(x-r, y-r, 2*r, 2*r);
@@ -132,9 +133,8 @@ public class GraphRenderer {
     /**
      * Converts mouse / screen position to model position
      */
-    //TODO: WZIĄĆ POD UWAGĘ SKALOWANIE! WSZĘDZIE!
     public Position getPositionAt(Position p) {
-        return new Position(p.getX()-xOffset, p.getY()-yOffset);
+        return new Position((p.getX()-xOffset)/scale, (p.getY()-yOffset)/scale);
     }
 
     /**
