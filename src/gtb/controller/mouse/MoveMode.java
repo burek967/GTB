@@ -2,6 +2,7 @@ package gtb.controller.mouse;
 
 import gtb.view.GraphRenderer;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 
 public class MoveMode implements MouseMode {
 
@@ -25,5 +26,11 @@ public class MoveMode implements MouseMode {
             renderer.changeOffset(lastX - (int) event.getX(), lastY - (int) event.getY());
         lastX = (int) event.getX();
         lastY = (int) event.getY();
+    }
+
+    public void onScroll(ScrollEvent event, GraphRenderer renderer){
+        System.out.println(event.getDeltaX() + " " + event.getDeltaY());
+        System.out.println(event.getX() + " " + event.getY());
+        renderer.changeScale(event.getDeltaY(),(int) event.getX(),(int) event.getY());
     }
 }

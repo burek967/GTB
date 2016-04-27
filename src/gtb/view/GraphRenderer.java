@@ -29,6 +29,21 @@ public class GraphRenderer {
         redraw();
     }
 
+    public void changeScale(double dy, int x, int y){
+        dy /= 400;
+        double t;
+        if(dy < 0 && scale + dy <= 1){
+            t = 0.9;
+            scale *= 0.9;
+        } else {
+            t = 1 + dy/scale;
+            scale += dy;
+        }
+        xOffset = (int)(t*(xOffset-x) + x);
+        yOffset = (int)(t*(yOffset-y) + y);
+        redraw();
+    }
+
     public GraphRenderer(Canvas c){
         canvas = c;
         ctx = canvas.getGraphicsContext2D();
@@ -68,7 +83,10 @@ public class GraphRenderer {
             sb.append("canvas:  ").append((int)canvas.getWidth()).append("x").append((int)canvas.getHeight()).append('\n');
             sb.append("xOffset: ").append(xOffset).append('\n');
             sb.append("yOffset: ").append(yOffset).append('\n');
-            ctx.fillText(sb.toString(), 20, canvas.getHeight() - 50);
+            sb.append("scale:   ").append(scale).append('\n');
+            ctx.setTextAlign(TextAlignment.LEFT);
+            ctx.setTextBaseline(VPos.BOTTOM);
+            ctx.fillText(sb.toString(), 20, canvas.getHeight());
         }
     }
 
@@ -84,7 +102,7 @@ public class GraphRenderer {
         ctx.setStroke(Color.GREEN);
         Position p1 = e.getFirstVertex().getData().getPosition();
         Position p2 = e.getSecondVertex().getData().getPosition();
-        float p1x = p1.getX()+xOffset, p1y = p1.getY()+yOffset, p2x = p2.getX()+xOffset, p2y = p2.getY()+yOffset;
+        float p1x = (float)scale*p1.getX()+xOffset, p1y = (float)scale*p1.getY()+yOffset, p2x = (float)scale*p2.getX()+xOffset, p2y = (float)scale*p2.getY()+yOffset;
         float dx = p2x-p1x;
         float dy = p2y-p1y;
         float d = (float)Math.sqrt(dx*dx+dy*dy);
@@ -114,7 +132,7 @@ public class GraphRenderer {
     private void drawVertex(Vertex v) {
         ctx.setFill(Color.GREENYELLOW);
         Position p = v.getData().getPosition();
-        float x = p.getX()+xOffset, y = p.getY()+yOffset;
+        float x = (float) scale*p.getX()+xOffset, y = (float) scale*p.getY()+yOffset;
         ctx.fillOval(x-vertexRadius, y-vertexRadius, 2*vertexRadius, 2*vertexRadius);
         ctx.setStroke(Color.GREEN);
         ctx.strokeOval(x-vertexRadius, y-vertexRadius, 2*vertexRadius, 2*vertexRadius);

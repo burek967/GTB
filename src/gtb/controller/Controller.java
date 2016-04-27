@@ -10,6 +10,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.stage.*;
 
 public class Controller {
@@ -111,5 +112,9 @@ public class Controller {
 
     public void mouseOnCanvasReleased(MouseEvent event) {
         mode.getHandlers().onRelease(event, renderer);
+    }
+
+    public void mouseOnScroll(ScrollEvent event) {
+        mode.getHandlers().onScroll(event, renderer);
     }
 }

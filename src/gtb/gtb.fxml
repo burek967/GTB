@@ -51,7 +51,7 @@
     <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
         <Canvas fx:id="canvas" height="775.0" onMouseDragged="#mouseOnCanvasDrag" onMouseEntered="#mouseOnCanvas"
                 onMouseExited="#mouseOutCanvas" onMousePressed="#mouseOnCanvasPressed"
-                onMouseReleased="#mouseOnCanvasReleased" width="1225.0" AnchorPane.bottomAnchor="0.0"
+                onMouseReleased="#mouseOnCanvasReleased" onScroll="#mouseOnScroll" width="1225.0" AnchorPane.bottomAnchor="0.0"
                 AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
     </AnchorPane>
     <AnchorPane GridPane.columnSpan="3" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER">
