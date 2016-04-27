@@ -18,7 +18,7 @@ public class GraphRenderer {
     private Graph graph;
     private int xOffset=0;
     private int yOffset=0;
-    private double scale=1.0; // todo someday ;_;
+    private double scale=1.0;
     private boolean debugInfo=false;
     
     private static final float arrowSize = 15, vertexRadius = 20;
@@ -30,15 +30,11 @@ public class GraphRenderer {
     }
 
     public void changeScale(double dy, int x, int y){
+        if(dy < 0 && scale <= 0.4)
+            return;
         dy /= 400;
-        double t;
-        if(dy < 0 && scale + dy <= 1){
-            t = 0.9;
-            scale *= 0.9;
-        } else {
-            t = 1 + dy/scale;
-            scale += dy;
-        }
+        double t = 1 + dy/scale;
+        scale += dy;
         xOffset = (int)(t*(xOffset-x) + x);
         yOffset = (int)(t*(yOffset-y) + y);
         redraw();
@@ -106,23 +102,25 @@ public class GraphRenderer {
         float dx = p2x-p1x;
         float dy = p2y-p1y;
         float d = (float)Math.sqrt(dx*dx+dy*dy);
-        ctx.strokeLine(p1x+vertexRadius*dx/d, p1y+vertexRadius*dy/d,
-                p2x-vertexRadius*dx/d, p2y-vertexRadius*dy/d);
+        float r = (float) scale * vertexRadius;
+        float arr = (float) Math.min(scale,1.5f) * arrowSize;
+        ctx.strokeLine(p1x+r*dx/d, p1y+r*dy/d,
+                p2x-r*dx/d, p2y-r*dy/d);
         if(e.isDirected()) {
             ctx.setFill(Color.GREEN);
-            double xp = -arrowSize*dx/d;
-            double yp = -arrowSize*dy/d;
-            double ypp = Math.sqrt(arrowSize*arrowSize*xp*xp/(yp*yp+xp*xp)*0.25);
+            double xp = -arr*dx/d;
+            double yp = -arr*dy/d;
+            double ypp = Math.sqrt(arr*arr*xp*xp/(yp*yp+xp*xp)*0.25);
             double xpp = ypp*yp/xp;
             double[] ptx = new double[] {
-                    p2x-vertexRadius*dx/d,
-                    p2x-vertexRadius*dx/d+xp+xpp,
-                    p2x-vertexRadius*dx/d+xp-xpp
+                    p2x-r*dx/d,
+                    p2x-r*dx/d+xp+xpp,
+                    p2x-r*dx/d+xp-xpp
             };
             double[] pty = new double[] {
-                    p2y-vertexRadius*dy/d,
-                    p2y-vertexRadius*dy/d+yp-ypp,
-                    p2y-vertexRadius*dy/d+yp+ypp
+                    p2y-r*dy/d,
+                    p2y-r*dy/d+yp-ypp,
+                    p2y-r*dy/d+yp+ypp
             };
 
             ctx.fillPolygon(ptx, pty, 3);
@@ -132,10 +130,11 @@ public class GraphRenderer {
     private void drawVertex(Vertex v) {
         ctx.setFill(Color.GREENYELLOW);
         Position p = v.getData().getPosition();
+        float r = (float) scale * vertexRadius;
         float x = (float) scale*p.getX()+xOffset, y = (float) scale*p.getY()+yOffset;
-        ctx.fillOval(x-vertexRadius, y-vertexRadius, 2*vertexRadius, 2*vertexRadius);
+        ctx.fillOval(x-r, y-r, 2*r, 2*r);
         ctx.setStroke(Color.GREEN);
-        ctx.strokeOval(x-vertexRadius, y-vertexRadius, 2*vertexRadius, 2*vertexRadius);
+        ctx.strokeOval(x-r, y-r, 2*r, 2*r);
         ctx.setFill(Color.BLACK);
         ctx.fillText(String.valueOf(v.getData().getId()), x, y);
     }

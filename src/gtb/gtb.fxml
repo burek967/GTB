@@ -7,7 +7,7 @@
 
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0"
           prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="gtb.controller.Controller">
+          fx:controller="gtb.controller.Controller" onKeyPressed="#onKeyPressed">
     <columnConstraints>
         <ColumnConstraints hgrow="NEVER" maxWidth="50.0" minWidth="50.0" prefWidth="50.0"/>
         <ColumnConstraints fillWidth="false" hgrow="NEVER" maxWidth="5.0" minWidth="5.0" prefWidth="5.0"/>

@@ -8,9 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseDragEvent;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
+import javafx.scene.input.*;
 import javafx.stage.*;
 
 public class Controller {
@@ -90,7 +88,7 @@ public class Controller {
         d.showAndWait();
     }
 
-    public void toggleDebugInfo(ActionEvent event) {
+    public void toggleDebugInfo() {
         renderer.setDebugInfo(showDebugInfo.isSelected());
     }
 
@@ -116,5 +114,12 @@ public class Controller {
 
     public void mouseOnScroll(ScrollEvent event) {
         mode.getHandlers().onScroll(event, renderer);
+    }
+
+    public void onKeyPressed(KeyEvent event) {
+        if(event.getCode().equals(KeyCode.F2)){
+            showDebugInfo.setSelected(!showDebugInfo.isSelected());
+            toggleDebugInfo();
+        }
     }
 }

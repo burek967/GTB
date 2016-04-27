@@ -29,8 +29,6 @@ public class MoveMode implements MouseMode {
     }
 
     public void onScroll(ScrollEvent event, GraphRenderer renderer){
-        System.out.println(event.getDeltaX() + " " + event.getDeltaY());
-        System.out.println(event.getX() + " " + event.getY());
         renderer.changeScale(event.getDeltaY(),(int) event.getX(),(int) event.getY());
     }
 }
