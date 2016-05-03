@@ -29,6 +29,15 @@ public class NewEdgeMode implements MouseMode{
         if(v == null) return;
         if(v1 == null) {
             v1 = v;
+            renderer.selectVertex(v);
+            renderer.redraw();
+            return;
+        }
+        //deselect
+        if(v1 == v) {
+            v1 = null;
+            renderer.selectVertex(null);
+            renderer.redraw();
             return;
         }
         if(directed)
@@ -36,6 +45,7 @@ public class NewEdgeMode implements MouseMode{
         else
             graph.addUndirectedEdge(v1, v);
         v1 = null;
+        renderer.selectVertex(null);
         renderer.redraw();
     }
 

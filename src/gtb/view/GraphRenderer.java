@@ -7,7 +7,11 @@ import gtb.model.Vertex;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.BlendMode;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.RadialGradient;
+import javafx.scene.paint.Stop;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
@@ -21,6 +25,8 @@ public class GraphRenderer {
     private boolean debugInfo=false;
     
     private static final float arrowSize = 15, vertexRadius = 20;
+
+    private Vertex selectedVertex;
 
     public void changeOffset(int dx, int dy){
         xOffset -= dx;
@@ -119,13 +125,29 @@ public class GraphRenderer {
     }
 
     private void drawVertex(Vertex v) {
-        ctx.setFill(Color.GREENYELLOW);
+
         Position p = v.getData().getPosition();
         float r = scale * vertexRadius;
         float x = scale*p.getX()+xOffset, y = scale*p.getY()+yOffset;
+
+        ctx.setFill(Color.GREENYELLOW);
         ctx.fillOval(x-r, y-r, 2*r, 2*r);
-        ctx.setStroke(Color.GREEN);
-        ctx.strokeOval(x-r, y-r, 2*r, 2*r);
+
+        if(v == selectedVertex) {
+            ctx.setStroke(Color.RED);
+            ctx.setLineWidth(2.0);
+
+            ctx.strokeOval(x-r, y-r, 2*r, 2*r);
+            ctx.setLineWidth(1.0);
+            ctx.setFill(new RadialGradient(0, 0, 0.5, 0.5, 1, true,
+                    CycleMethod.REFLECT, new Stop(0, new Color(1, 1, 1, 0.5)), new Stop(0.7, Color.TRANSPARENT)));
+            ctx.fillOval(x-r, y-r, 2*r, 2*r);
+        }
+        else {
+            ctx.setStroke(Color.GREEN);
+            ctx.strokeOval(x-r, y-r, 2*r, 2*r);
+        }
+
         ctx.setFill(Color.BLACK);
         ctx.fillText(String.valueOf(v.getData().getId()), x, y);
     }
@@ -147,9 +169,14 @@ public class GraphRenderer {
             Position pv = v.getData().getPosition();
             float dx = p.getX()-pv.getX();
             float dy = p.getY()-pv.getY();
-            if(dx*dx+dy*dy <= vertexRadius*vertexRadius)
+            if(dx*dx+dy*dy <= vertexRadius*vertexRadius) {
                 return v;
+            }
         }
         return null;
+    }
+
+    public void selectVertex(Vertex v) {
+        selectedVertex = v;
     }
 }
