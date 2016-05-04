@@ -15,4 +15,5 @@ public abstract class GraphElement<T extends GraphElementData> {
     }
 
     public abstract void commitSeppuku(Graph g);
+    public abstract void addYourself(Graph g);
 }

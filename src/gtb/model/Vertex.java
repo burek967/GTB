@@ -12,4 +12,9 @@ public class Vertex extends GraphElement<VertexData> {
     public void commitSeppuku(Graph g) {
         g.deleteVertex(this);
     }
+
+    @Override
+    public void addYourself(Graph g) {
+        g.addVertex(this);
+    }
 }

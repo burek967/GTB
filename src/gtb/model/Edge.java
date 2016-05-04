@@ -30,4 +30,9 @@ public class Edge extends GraphElement<EdgeData> {
     public void commitSeppuku(Graph g) {
         g.deleteEdge(this);
     }
+
+    @Override
+    public void addYourself(Graph g) {
+        g.addEdge(this);
+    }
 }
