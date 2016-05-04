@@ -3,7 +3,7 @@ package gtb.model;
 /**
  * Created by angela on 4/20/16.
  */
-public class GraphElement<T extends GraphElementData> {
+public abstract class GraphElement<T extends GraphElementData> {
     private T data;
 
     public T getData() {
@@ -13,4 +13,6 @@ public class GraphElement<T extends GraphElementData> {
     public void setData(T data) {
         this.data = data;
     }
+
+    public abstract void commitSeppuku(Graph g);
 }

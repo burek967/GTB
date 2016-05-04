@@ -1,5 +1,6 @@
 package gtb.controller.mouse;
 
+import gtb.model.Edge;
 import gtb.model.Graph;
 import gtb.model.Position;
 import gtb.model.Vertex;
@@ -17,8 +18,14 @@ public class MoveMode implements MouseMode {
     public void onPress(MouseEvent event, GraphRenderer renderer, Graph graph) {
         lastX = (int) event.getX();
         lastY = (int) event.getY();
-        vertexDragged = renderer.getVertexAt(new Position(lastX, lastY));
-        renderer.selectVertex(vertexDragged);
+        Position p = new Position(lastX, lastY);
+        vertexDragged = renderer.getVertexAt(p);
+        if(vertexDragged == null) {
+            Edge selectedEdge = renderer.getEdgeAt(p);
+            renderer.selectElement(selectedEdge);
+        }
+        else
+            renderer.selectElement(vertexDragged);
         renderer.redraw();
     }
 

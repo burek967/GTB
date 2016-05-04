@@ -7,4 +7,9 @@ public class Vertex extends GraphElement<VertexData> {
     public Vertex() {
         setData(new VertexData());
     }
+
+    @Override
+    public void commitSeppuku(Graph g) {
+        g.deleteVertex(this);
+    }
 }
