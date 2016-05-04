@@ -103,7 +103,10 @@ public class GraphRenderer {
         ctx.strokeLine(p1x+r*dx/d, p1y+r*dy/d,
                 p2x-r*dx/d, p2y-r*dy/d);
         if(e.isDirected()) {
-            ctx.setFill(Color.GREEN);
+            if(selectedElement == e)
+                ctx.setFill(Color.RED);
+            else
+                ctx.setFill(Color.GREEN);
             double xp = -arr*dx/d;
             double yp = -arr*dy/d;
             double ypp = Math.sqrt(arr*arr*xp*xp/(yp*yp+xp*xp)*0.25);
