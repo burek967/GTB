@@ -18,6 +18,8 @@ public class MoveMode implements MouseMode {
         lastX = (int) event.getX();
         lastY = (int) event.getY();
         vertexDragged = renderer.getVertexAt(new Position(lastX, lastY));
+        renderer.selectVertex(vertexDragged);
+        renderer.redraw();
     }
 
     @Override
