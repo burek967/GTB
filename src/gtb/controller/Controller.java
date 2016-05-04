@@ -2,6 +2,7 @@ package gtb.controller;
 
 import gtb.controller.mouse.MouseModes;
 import gtb.model.Graph;
+import gtb.model.GraphElement;
 import gtb.view.GraphRenderer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -111,7 +112,8 @@ public class Controller {
     }
 
     public void onDeleteButton() {
-        renderer.getSelectedElement().commitSeppuku(graph);
+        GraphElement e = renderer.getSelectedElement();
+        e.commitSeppuku(graph);
         renderer.redraw();
     }
 
