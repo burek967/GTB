@@ -205,4 +205,8 @@ public class GraphRenderer {
     public void selectElement(GraphElement e) {
         selectedElement = e;
     }
+
+    public GraphElement getSelectedElement() {
+        return selectedElement;
+    }
 }

@@ -110,6 +110,11 @@ public class Controller {
         mode = MouseModes.ADD_UNDIRECTED_EDGE;
     }
 
+    public void onDeleteButton() {
+        renderer.getSelectedElement().commitSeppuku(graph);
+        renderer.redraw();
+    }
+
     public void toggleDebugInfo() {
         renderer.setDebugInfo(showDebugInfo.isSelected());
     }
