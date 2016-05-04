@@ -1,6 +1,8 @@
 package gtb.controller;
 
 import gtb.controller.mouse.MouseModes;
+import gtb.file_support.GraphExport;
+import gtb.file_support.GraphImport;
 import gtb.model.Graph;
 import gtb.view.GraphRenderer;
 import javafx.event.ActionEvent;
@@ -12,8 +14,11 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+
+import java.io.*;
 
 public class Controller {
 
@@ -143,5 +148,54 @@ public class Controller {
             showDebugInfo.setSelected(!showDebugInfo.isSelected());
             toggleDebugInfo();
         }
+    }
+
+    public void exportGraph() {
+        FileChooser chooser = new FileChooser();
+        chooser.setTitle("Export Graph to File");
+        chooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Text Files","*.txt"),
+                new FileChooser.ExtensionFilter("All Files","*.*")
+        );
+        chooser.setInitialDirectory(new File(System.getProperty("user.dir")));
+        File selected = chooser.showSaveDialog(stage);
+        if(selected == null)
+            return;
+        try {
+            GraphExport.graphExport(graph,selected.getAbsolutePath());
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Export error");
+            alert.setHeaderText("Something went wrong!");
+            alert.setContentText(e.toString());
+            alert.showAndWait();
+        }
+    }
+
+    public void importGraph() {
+        FileChooser chooser = new FileChooser();
+        chooser.setTitle("Import Graph from File");
+        chooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Text Files","*.txt"),
+                new FileChooser.ExtensionFilter("All Files","*.*")
+        );
+        chooser.setInitialDirectory(new File(System.getProperty("user.dir")));
+        File selected = chooser.showOpenDialog(stage);
+        if(selected == null)
+            return;
+        Graph G;
+        try {
+            G = GraphImport.graphImport(selected.getAbsolutePath());
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Import error");
+            alert.setHeaderText("Something went wrong!");
+            alert.setContentText(e.toString());
+            alert.showAndWait();
+            return;
+        }
+        graph = G;
+        renderer = new GraphRenderer(canvas, G);
+        renderer.redraw();
     }
 }
