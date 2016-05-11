@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.input.*?>
 <?import java.lang.*?>
 <?import javafx.scene.canvas.*?>
 <?import javafx.geometry.*?>
@@ -80,6 +81,16 @@
                      </Menu>
                      <Menu mnemonicParsing="false" text="Edit">
                         <items>
+                        <MenuItem fx:id="undoButton" disable="true" mnemonicParsing="false" text="Undo">
+                           <accelerator>
+                              <KeyCodeCombination alt="UP" code="Z" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                           </accelerator>
+                        </MenuItem>
+                        <MenuItem fx:id="redoButton" disable="true" mnemonicParsing="false" text="Redo">
+                           <accelerator>
+                              <KeyCodeCombination alt="UP" code="R" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                           </accelerator>
+                        </MenuItem>
                             <MenuItem mnemonicParsing="false" text="Delete" />
                         </items>
                      </Menu>

@@ -1,5 +1,6 @@
 package gtb.controller;
 
+import gtb.controller.events.GTBActionEvent;
 import gtb.controller.mouse.MouseModes;
 import gtb.file_support.GraphExport;
 import gtb.file_support.GraphImport;
@@ -37,12 +38,17 @@ public class Controller {
     private RadioMenuItem showDebugInfo;
     @FXML
     private MenuBar menuBar;
+    @FXML
+    private MenuItem undoButton;
+    @FXML
+    private MenuItem redoButton;
 
+    @SuppressWarnings("unused")
     public void initialize(){
         graph = new Graph();
         renderer = new GraphRenderer(canvas, graph);
         renderer.redraw();
-        actionsManager = new ActionsManager(graph);
+        actionsManager = new ActionsManager(graph,undoButton,redoButton);
     }
 
     public void setStage(Stage s){
@@ -53,9 +59,12 @@ public class Controller {
         stage.getScene().heightProperty().addListener((observable, oldValue, newValue) -> {
             resizeCanvas(stage.getScene().widthProperty().doubleValue()-55,newValue.doubleValue()-menuBar.getHeight());
         });
+        stage.getScene().addEventFilter(GTBActionEvent.ACTION_FIRED, event -> { undoButton.setDisable(false); redoButton.setDisable(true); });
+        stage.getScene().addEventFilter(GTBActionEvent.ACTION_REDO, event -> redoButton.setDisable(!actionsManager.canRedo()));
+        stage.getScene().addEventFilter(GTBActionEvent.ACTION_UNDO, event -> redoButton.setDisable(!actionsManager.canUndo()));
     }
 
-    public void resizeCanvas(double w, double h){
+    private void resizeCanvas(double w, double h){
         canvas.setHeight(h);
         canvas.setWidth(w);
         renderer.redraw();
