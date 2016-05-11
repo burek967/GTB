@@ -1,6 +1,8 @@
 package gtb.view;
 
+import gtb.controller.events.GTBSelectEvent;
 import gtb.model.*;
+import javafx.event.Event;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -203,6 +205,10 @@ public class GraphRenderer {
     }
 
     public void selectElement(GraphElement e) {
+        if(e == null)
+            Event.fireEvent(canvas, new GTBSelectEvent(GTBSelectEvent.DESELECT, selectedElement));
+        else
+            Event.fireEvent(canvas, new GTBSelectEvent(GTBSelectEvent.SELECT, e));
         selectedElement = e;
     }
 

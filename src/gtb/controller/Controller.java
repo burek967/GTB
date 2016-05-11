@@ -1,6 +1,7 @@
 package gtb.controller;
 
 import gtb.controller.events.GTBActionEvent;
+import gtb.controller.events.GTBSelectEvent;
 import gtb.controller.mouse.MouseModes;
 import gtb.file_support.GraphExport;
 import gtb.file_support.GraphImport;
@@ -9,15 +10,11 @@ import gtb.model.GraphElement;
 import gtb.model.operations.ActionsManager;
 import gtb.model.operations.RemoveElementAction;
 import gtb.view.GraphRenderer;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
+import javafx.scene.input.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -31,6 +28,7 @@ public class Controller {
     private Graph graph;
     private MouseModes mode = MouseModes.MOVE;
     private ActionsManager actionsManager;
+    private CanvasContextMenu canvasContextMenu;
 
     @FXML
     private Canvas canvas;
@@ -42,45 +40,71 @@ public class Controller {
     private MenuItem undoButton;
     @FXML
     private MenuItem redoButton;
+    @FXML
+    private MenuItem deleteButton;
 
     @SuppressWarnings("unused")
-    public void initialize(){
+    public void initialize() {
         graph = new Graph();
         renderer = new GraphRenderer(canvas, graph);
         renderer.redraw();
-        actionsManager = new ActionsManager(graph,undoButton,redoButton);
+        actionsManager = new ActionsManager(graph, undoButton, redoButton);
+        canvasContextMenu = new CanvasContextMenu();
     }
 
-    public void setStage(Stage s){
+    public void setStage(Stage s) {
         stage = s;
         stage.getScene().widthProperty().addListener((observable, oldValue, newValue) -> {
-            resizeCanvas(newValue.doubleValue()-55,stage.getScene().heightProperty().doubleValue()-menuBar.getHeight());
+            resizeCanvas(newValue.doubleValue() - 55, stage.getScene().heightProperty().doubleValue() - menuBar.getHeight());
         });
         stage.getScene().heightProperty().addListener((observable, oldValue, newValue) -> {
-            resizeCanvas(stage.getScene().widthProperty().doubleValue()-55,newValue.doubleValue()-menuBar.getHeight());
+            resizeCanvas(stage.getScene().widthProperty().doubleValue() - 55, newValue.doubleValue() - menuBar.getHeight());
         });
-        stage.getScene().addEventFilter(GTBActionEvent.ACTION_FIRED, event -> { undoButton.setDisable(false); redoButton.setDisable(true); });
-        stage.getScene().addEventFilter(GTBActionEvent.ACTION_REDO, event -> redoButton.setDisable(!actionsManager.canRedo()));
-        stage.getScene().addEventFilter(GTBActionEvent.ACTION_UNDO, event -> redoButton.setDisable(!actionsManager.canUndo()));
+        stage.getScene().addEventFilter(GTBActionEvent.ACTION_FIRED, event -> {
+            undoButton.setDisable(false);
+            redoButton.setDisable(true);
+        });
+        stage.getScene().addEventFilter(GTBActionEvent.ACTION_REDO, event -> {
+            redoButton.setDisable(!actionsManager.canRedo());
+            canvasContextMenu.setRedoDisable(!actionsManager.canRedo());
+        });
+        stage.getScene().addEventFilter(GTBActionEvent.ACTION_UNDO, event -> {
+            redoButton.setDisable(!actionsManager.canUndo());
+            canvasContextMenu.setUndoDisable(!actionsManager.canUndo());
+        });
+        stage.getScene().addEventFilter(GTBSelectEvent.SELECT, event -> {
+            deleteButton.setDisable(false);
+            canvasContextMenu.setDeleteDisable(false);
+        });
+        stage.getScene().addEventFilter(GTBSelectEvent.DESELECT, event -> {
+            deleteButton.setDisable(true);
+            canvasContextMenu.setDeleteDisable(true);
+        });
+        canvas.setOnContextMenuRequested(this::showContextMenu);
     }
 
-    private void resizeCanvas(double w, double h){
+    private void resizeCanvas(double w, double h) {
         canvas.setHeight(h);
         canvas.setWidth(w);
         renderer.redraw();
     }
 
-    public void closeEventHandler(){
+    public void closeEventHandler() {
         Alert a = new Alert(Alert.AlertType.CONFIRMATION);
         a.setHeaderText("Do you really want to quit?");
         a.setTitle("Are you sure?");
-        if(a.showAndWait().get() == ButtonType.OK){
+        if (a.showAndWait().get() == ButtonType.OK) {
             // cleanup
             stage.close();
         }
     }
 
-    public void showAboutWindow(ActionEvent event) {
+    private void showContextMenu(ContextMenuEvent event){
+        canvasContextMenu.setCoordinates((int)event.getSceneX(),(int)event.getSceneY());
+        canvasContextMenu.show(canvas,event.getScreenX(),event.getScreenY());
+    }
+
+    public void showAboutWindow() {
         Dialog d = new Dialog();
         d.getDialogPane().getButtonTypes().add(ButtonType.OK);
         d.initStyle(StageStyle.DECORATED);
@@ -131,7 +155,7 @@ public class Controller {
 
     public void onDeleteButton() {
         GraphElement e = renderer.getSelectedElement();
-        if(e == null) return;
+        if (e == null) return;
         renderer.selectElement(null);
         e.commitSeppuku(graph);
         actionsManager.addOperation(new RemoveElementAction(e, graph));
@@ -142,11 +166,11 @@ public class Controller {
         renderer.setDebugInfo(showDebugInfo.isSelected());
     }
 
-    public void mouseOnCanvas(){
+    public void mouseOnCanvas() {
         stage.getScene().setCursor(mode.getCursor());
     }
 
-    public void mouseOutCanvas(){
+    public void mouseOutCanvas() {
         stage.getScene().setCursor(Cursor.DEFAULT);
     }
 
@@ -167,7 +191,7 @@ public class Controller {
     }
 
     public void onKeyPressed(KeyEvent event) {
-        if(event.getCode().equals(KeyCode.F2)){
+        if (event.getCode().equals(KeyCode.F2)) {
             showDebugInfo.setSelected(!showDebugInfo.isSelected());
             toggleDebugInfo();
         }
@@ -177,15 +201,15 @@ public class Controller {
         FileChooser chooser = new FileChooser();
         chooser.setTitle("Export Graph to File");
         chooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Text Files","*.txt"),
-                new FileChooser.ExtensionFilter("All Files","*.*")
+                new FileChooser.ExtensionFilter("Text Files", "*.txt"),
+                new FileChooser.ExtensionFilter("All Files", "*.*")
         );
         chooser.setInitialDirectory(new File(System.getProperty("user.dir")));
         File selected = chooser.showSaveDialog(stage);
-        if(selected == null)
+        if (selected == null)
             return;
         try {
-            GraphExport.graphExport(graph,selected.getAbsolutePath());
+            GraphExport.graphExport(graph, selected.getAbsolutePath());
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Export error");
@@ -199,12 +223,12 @@ public class Controller {
         FileChooser chooser = new FileChooser();
         chooser.setTitle("Import Graph from File");
         chooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Text Files","*.txt"),
-                new FileChooser.ExtensionFilter("All Files","*.*")
+                new FileChooser.ExtensionFilter("Text Files", "*.txt"),
+                new FileChooser.ExtensionFilter("All Files", "*.*")
         );
         chooser.setInitialDirectory(new File(System.getProperty("user.dir")));
         File selected = chooser.showOpenDialog(stage);
-        if(selected == null)
+        if (selected == null)
             return;
         Graph G;
         try {
@@ -221,4 +245,49 @@ public class Controller {
         renderer = new GraphRenderer(canvas, G);
         renderer.redraw();
     }
+
+    private class CanvasContextMenu extends ContextMenu {
+
+        private MenuItem undoButton = new MenuItem("Undo");
+        private MenuItem redoButton = new MenuItem("Redo");
+        private MenuItem delete = new MenuItem("Delete");
+        private Menu add = new Menu("Add");
+        private MenuItem vertex = new MenuItem("Vertex");
+        private MenuItem undirectedEdge = new MenuItem("Undirected Edge");
+        private MenuItem directedEdge = new MenuItem("Directed Edge");
+        private int x,y;
+
+        void setCoordinates(int x, int y){
+            this.x = x;
+            this.y = y;
+        }
+
+        CanvasContextMenu(){
+            this.getItems().addAll(undoButton,redoButton,new SeparatorMenuItem(),add,delete);
+            add.getItems().addAll(vertex,undirectedEdge,directedEdge);
+            undoButton.setDisable(true);
+            redoButton.setDisable(true);
+            vertex.setOnAction(event -> {
+                MouseModes old = mode;
+                mode = MouseModes.ADD_VERTEX;
+                MouseEvent.fireEvent(canvas,new MouseEvent(MouseEvent.MOUSE_RELEASED,x,y,0,0,MouseButton.PRIMARY,1,false,false,false,false,false,false,false,false,false,false,null));
+                mode = old;
+            });
+            delete.setOnAction(event -> onDeleteButton());
+        }
+
+        void setUndoDisable(boolean b){
+            undoButton.setDisable(b);
+        }
+
+        void setRedoDisable(boolean b){
+            redoButton.setDisable(b);
+        }
+
+        void setDeleteDisable(boolean b){
+            delete.setDisable(b);
+        }
+
+    }
+
 }
