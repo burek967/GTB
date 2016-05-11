@@ -48,30 +48,33 @@ public class Controller {
         graph = new Graph();
         renderer = new GraphRenderer(canvas, graph);
         renderer.redraw();
-        actionsManager = new ActionsManager(graph, undoButton, redoButton);
         canvasContextMenu = new CanvasContextMenu();
     }
 
     public void setStage(Stage s) {
         stage = s;
+        actionsManager = new ActionsManager(graph, undoButton, redoButton, stage.getScene());
+        undoButton.setOnAction(event -> {
+            actionsManager.undo();
+            renderer.redraw();
+        });
+        redoButton.setOnAction(event -> {
+            actionsManager.redo();
+            renderer.redraw();
+        });
+        stage.setOnCloseRequest(event -> {
+            closeEventHandler();
+            event.consume();
+        });
         stage.getScene().widthProperty().addListener((observable, oldValue, newValue) -> {
             resizeCanvas(newValue.doubleValue() - 55, stage.getScene().heightProperty().doubleValue() - menuBar.getHeight());
         });
         stage.getScene().heightProperty().addListener((observable, oldValue, newValue) -> {
             resizeCanvas(stage.getScene().widthProperty().doubleValue() - 55, newValue.doubleValue() - menuBar.getHeight());
         });
-        stage.getScene().addEventFilter(GTBActionEvent.ACTION_FIRED, event -> {
-            undoButton.setDisable(false);
-            redoButton.setDisable(true);
-        });
-        stage.getScene().addEventFilter(GTBActionEvent.ACTION_REDO, event -> {
-            redoButton.setDisable(!actionsManager.canRedo());
-            canvasContextMenu.setRedoDisable(!actionsManager.canRedo());
-        });
-        stage.getScene().addEventFilter(GTBActionEvent.ACTION_UNDO, event -> {
-            redoButton.setDisable(!actionsManager.canUndo());
-            canvasContextMenu.setUndoDisable(!actionsManager.canUndo());
-        });
+        stage.getScene().addEventHandler(GTBActionEvent.ACTION_FIRED, this::updateUndoRedo);
+        stage.getScene().addEventFilter(GTBActionEvent.ACTION_REDO, this::updateUndoRedo);
+        stage.getScene().addEventFilter(GTBActionEvent.ACTION_UNDO, this::updateUndoRedo);
         stage.getScene().addEventFilter(GTBSelectEvent.SELECT, event -> {
             deleteButton.setDisable(false);
             canvasContextMenu.setDeleteDisable(false);
@@ -81,6 +84,13 @@ public class Controller {
             canvasContextMenu.setDeleteDisable(true);
         });
         canvas.setOnContextMenuRequested(this::showContextMenu);
+    }
+
+    private void updateUndoRedo(GTBActionEvent event){
+        undoButton.setDisable(!actionsManager.canUndo());
+        redoButton.setDisable(!actionsManager.canRedo());
+        canvasContextMenu.setUndoDisable(!actionsManager.canUndo());
+        canvasContextMenu.setRedoDisable(!actionsManager.canRedo());
     }
 
     private void resizeCanvas(double w, double h) {
@@ -137,6 +147,15 @@ public class Controller {
         d.showAndWait();
     }
 
+    public void removeSelectedElement() {
+        GraphElement e = renderer.getSelectedElement();
+        if (e == null) return;
+        renderer.selectElement(null);
+        e.commitSeppuku(graph);
+        actionsManager.addOperation(new RemoveElementAction(e, graph));
+        renderer.redraw();
+    }
+
     public void onMoveButton() {
         mode = MouseModes.MOVE;
     }
@@ -151,15 +170,6 @@ public class Controller {
 
     public void onNewUndirectedEdgeButton() {
         mode = MouseModes.ADD_UNDIRECTED_EDGE;
-    }
-
-    public void onDeleteButton() {
-        GraphElement e = renderer.getSelectedElement();
-        if (e == null) return;
-        renderer.selectElement(null);
-        e.commitSeppuku(graph);
-        actionsManager.addOperation(new RemoveElementAction(e, graph));
-        renderer.redraw();
     }
 
     public void toggleDebugInfo() {
@@ -179,11 +189,12 @@ public class Controller {
     }
 
     public void mouseOnCanvasPressed(MouseEvent event) {
-        mode.getHandlers().onPress(event, renderer, graph);
+        actionsManager.addOperation(mode.getHandlers().onPress(event, renderer, graph));
     }
 
     public void mouseOnCanvasReleased(MouseEvent event) {
-        mode.getHandlers().onRelease(event, renderer, graph);
+        canvasContextMenu.hide();
+        actionsManager.addOperation(mode.getHandlers().onRelease(event, renderer, graph));
     }
 
     public void mouseOnScroll(ScrollEvent event) {
@@ -273,7 +284,15 @@ public class Controller {
                 MouseEvent.fireEvent(canvas,new MouseEvent(MouseEvent.MOUSE_RELEASED,x,y,0,0,MouseButton.PRIMARY,1,false,false,false,false,false,false,false,false,false,false,null));
                 mode = old;
             });
-            delete.setOnAction(event -> onDeleteButton());
+            delete.setOnAction(event -> removeSelectedElement());
+            undoButton.setOnAction(event -> {
+                actionsManager.undo();
+                renderer.redraw();
+            });
+            redoButton.setOnAction(event -> {
+                actionsManager.redo();
+                renderer.redraw();
+            });
         }
 
         void setUndoDisable(boolean b){

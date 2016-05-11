@@ -2,6 +2,7 @@ package gtb.model.operations;
 
 import gtb.controller.events.GTBActionEvent;
 import gtb.model.Graph;
+import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
 
 import java.util.Stack;
@@ -14,8 +15,9 @@ public class ActionsManager {
     private Stack<Reverseable> redoStack = new Stack<>();
     private Graph g;
     public static final Reverseable NO_ACTION = new NoOperation();
-    private MenuItem undoButton;
-    private MenuItem redoButton;
+    private final Scene scene;
+    private final MenuItem undoButton;
+    private final MenuItem redoButton;
 
     public boolean canRedo(){
         return !redoStack.isEmpty();
@@ -38,10 +40,11 @@ public class ActionsManager {
         }
     }
 
-    public ActionsManager(Graph g, MenuItem undo, MenuItem redo) {
+    public ActionsManager(Graph g, MenuItem undo, MenuItem redo, Scene s) {
         this.g = g;
         this.undoButton = undo;
         this.redoButton = redo;
+        this.scene = s;
     }
 
     public void undo() {
@@ -50,20 +53,21 @@ public class ActionsManager {
         r.reverse(g);
         redoStack.push(r);
         // I'm probably putting this in wrong place, oh well
-        GTBActionEvent.fireEvent(undoButton,new GTBActionEvent(GTBActionEvent.ACTION_UNDO,r));
+        GTBActionEvent.fireEvent(scene,new GTBActionEvent(GTBActionEvent.ACTION_UNDO,r));
     }
 
     public void redo() {
         if(redoStack.empty()) return;
-        Reverseable r = undoStack.pop();
+        Reverseable r = redoStack.pop();
         r.doIt(g);
-        undoStack.push(redoStack.pop());
-        GTBActionEvent.fireEvent(redoButton,new GTBActionEvent(GTBActionEvent.ACTION_REDO,r));
+        undoStack.push(r);
+        GTBActionEvent.fireEvent(scene,new GTBActionEvent(GTBActionEvent.ACTION_REDO,r));
     }
 
     public void addOperation(Reverseable operation) {
         if(operation == NO_ACTION) return;
         redoStack.clear();
         undoStack.add(operation);
+        GTBActionEvent.fireEvent(scene,new GTBActionEvent(GTBActionEvent.ACTION_FIRED,operation));
     }
 }

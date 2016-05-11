@@ -45,11 +45,6 @@
                              <Insets bottom="5.0" left="5.0" right="5.0" />
                          </VBox.margin>
                      </MenuButton>
-                     <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onDeleteButton" prefHeight="40.0" prefWidth="40.0" text="DEL" textAlignment="CENTER">
-                         <VBox.margin>
-                             <Insets bottom="5.0" left="5.0" right="5.0" />
-                         </VBox.margin>
-                     </Button>
                  </children>
               </VBox>
           </children>
@@ -91,7 +86,7 @@
                               <KeyCodeCombination alt="UP" code="R" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                            </accelerator>
                         </MenuItem>
-                            <MenuItem fx:id="deleteButton" disable="true" mnemonicParsing="false" text="Delete" />
+                            <MenuItem fx:id="deleteButton" onAction="#removeSelectedElement" disable="true" mnemonicParsing="false" text="Delete" />
                         </items>
                      </Menu>
                      <Menu mnemonicParsing="false" text="Help">
