@@ -83,7 +83,7 @@ public class Controller {
             deleteButton.setDisable(true);
             canvasContextMenu.setDeleteDisable(true);
         });
-        canvas.setOnContextMenuRequested(this::showContextMenu);
+        canvas.setOnContextMenuRequested(canvasContextMenu::show);
     }
 
     private void updateUndoRedo(GTBActionEvent event){
@@ -107,11 +107,6 @@ public class Controller {
             // cleanup
             stage.close();
         }
-    }
-
-    private void showContextMenu(ContextMenuEvent event){
-        canvasContextMenu.setCoordinates((int)event.getSceneX(),(int)event.getSceneY());
-        canvasContextMenu.show(canvas,event.getScreenX(),event.getScreenY());
     }
 
     public void showAboutWindow() {
@@ -189,7 +184,6 @@ public class Controller {
     }
 
     public void mouseOnCanvasPressed(MouseEvent event) {
-        canvasContextMenu.hide();
         actionsManager.addOperation(mode.getHandlers().onPress(event, renderer, graph));
     }
 
@@ -266,12 +260,7 @@ public class Controller {
         private MenuItem vertex = new MenuItem("Vertex");
         private MenuItem undirectedEdge = new MenuItem("Undirected Edge");
         private MenuItem directedEdge = new MenuItem("Directed Edge");
-        private int x,y;
-
-        void setCoordinates(int x, int y){
-            this.x = x;
-            this.y = y;
-        }
+        private double x,y;
 
         CanvasContextMenu(){
             this.getItems().addAll(undoButton,redoButton,new SeparatorMenuItem(),add,delete);
@@ -293,6 +282,13 @@ public class Controller {
                 actionsManager.redo();
                 renderer.redraw();
             });
+            setAutoHide(true);
+        }
+
+        void show(ContextMenuEvent event){
+            this.x = event.getSceneX();
+            this.y = event.getSceneY();
+            show(stage.getScene().getWindow(),event.getScreenX(),event.getScreenY());
         }
 
         void setUndoDisable(boolean b){
