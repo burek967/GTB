@@ -189,11 +189,11 @@ public class Controller {
     }
 
     public void mouseOnCanvasPressed(MouseEvent event) {
+        canvasContextMenu.hide();
         actionsManager.addOperation(mode.getHandlers().onPress(event, renderer, graph));
     }
 
     public void mouseOnCanvasReleased(MouseEvent event) {
-        canvasContextMenu.hide();
         actionsManager.addOperation(mode.getHandlers().onRelease(event, renderer, graph));
     }
 
