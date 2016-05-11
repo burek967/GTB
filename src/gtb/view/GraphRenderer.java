@@ -212,6 +212,20 @@ public class GraphRenderer {
         selectedElement = e;
     }
 
+    /**
+     * select element at screen position x, y
+     */
+    public void selectElement(float x, float y) {
+        Position p = new Position(x, y);
+        GraphElement e = getVertexAt(p);
+        if(e != null) {
+            selectElement(e);
+            return;
+        }
+        e = getEdgeAt(p);
+        selectElement(e);
+    }
+
     public GraphElement getSelectedElement() {
         return selectedElement;
     }

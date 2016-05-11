@@ -7,6 +7,7 @@ import gtb.file_support.GraphExport;
 import gtb.file_support.GraphImport;
 import gtb.model.Graph;
 import gtb.model.GraphElement;
+import gtb.model.Position;
 import gtb.model.operations.ActionsManager;
 import gtb.model.operations.RemoveElementAction;
 import gtb.view.GraphRenderer;
@@ -289,6 +290,8 @@ public class Controller {
             this.x = event.getSceneX();
             this.y = event.getSceneY();
             show(stage.getScene().getWindow(),event.getScreenX(),event.getScreenY());
+            renderer.selectElement((float) (event.getX()), (float) (event.getY()));
+            renderer.redraw();
         }
 
         void setUndoDisable(boolean b){
