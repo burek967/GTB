@@ -1,13 +1,9 @@
 package gtb.view;
 
-import gtb.model.Edge;
-import gtb.model.Graph;
-import gtb.model.Position;
-import gtb.model.Vertex;
+import gtb.model.*;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.effect.BlendMode;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.RadialGradient;
@@ -26,7 +22,7 @@ public class GraphRenderer {
     
     private static final float arrowSize = 15, vertexRadius = 20;
 
-    private Vertex selectedVertex;
+    private GraphElement selectedElement;
 
     public void changeOffset(int dx, int dy){
         xOffset -= dx;
@@ -91,7 +87,10 @@ public class GraphRenderer {
     }
 
     private void drawEdge(Edge e) {
-        ctx.setStroke(Color.GREEN);
+        if(selectedElement == e)
+            ctx.setStroke(Color.RED);
+        else
+            ctx.setStroke(Color.GREEN);
         Position p1 = e.getFirstVertex().getData().getPosition();
         Position p2 = e.getSecondVertex().getData().getPosition();
         float p1x = scale*p1.getX()+xOffset, p1y = scale*p1.getY()+yOffset,
@@ -104,7 +103,10 @@ public class GraphRenderer {
         ctx.strokeLine(p1x+r*dx/d, p1y+r*dy/d,
                 p2x-r*dx/d, p2y-r*dy/d);
         if(e.isDirected()) {
-            ctx.setFill(Color.GREEN);
+            if(selectedElement == e)
+                ctx.setFill(Color.RED);
+            else
+                ctx.setFill(Color.GREEN);
             double xp = -arr*dx/d;
             double yp = -arr*dy/d;
             double ypp = Math.sqrt(arr*arr*xp*xp/(yp*yp+xp*xp)*0.25);
@@ -133,7 +135,7 @@ public class GraphRenderer {
         ctx.setFill(Color.GREENYELLOW);
         ctx.fillOval(x-r, y-r, 2*r, 2*r);
 
-        if(v == selectedVertex) {
+        if(v == selectedElement) {
             ctx.setStroke(Color.RED);
             ctx.setLineWidth(2.0);
 
@@ -176,7 +178,35 @@ public class GraphRenderer {
         return null;
     }
 
-    public void selectVertex(Vertex v) {
-        selectedVertex = v;
+    /**
+     * Get edge at mouse/screen position p
+     * Returns null if no edge
+     */
+    public Edge getEdgeAt(Position p) {
+        p = getPositionAt(p);
+        for(Edge e : graph.getEdges()) {
+            Position pv1 = e.getFirstVertex().getData().getPosition();
+            Position pv2 = e.getSecondVertex().getData().getPosition();
+            float A = pv1.getY()-pv2.getY();
+            float B = pv2.getX()-pv1.getX();
+            float C = pv1.getX()*pv2.getY()-pv1.getY()*pv2.getX();
+            float l = (A*p.getX()+B*p.getY()+C);
+            float d2 = l*l/(A*A+B*B);
+            if(d2 > 100) continue;
+            if(p.getX() <= Math.max(pv1.getX(), pv2.getX())+5 &&
+                p.getX() >= Math.min(pv1.getX(), pv2.getX())-5 &&
+                p.getY() <= Math.max(pv1.getY(), pv2.getY())+5 &&
+                p.getY() >= Math.min(pv1.getY(), pv2.getY())-5)
+                return  e;
+        }
+        return null;
+    }
+
+    public void selectElement(GraphElement e) {
+        selectedElement = e;
+    }
+
+    public GraphElement getSelectedElement() {
+        return selectedElement;
     }
 }

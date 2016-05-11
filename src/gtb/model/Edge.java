@@ -26,4 +26,13 @@ public class Edge extends GraphElement<EdgeData> {
         return directed;
     }
 
+    @Override
+    public void commitSeppuku(Graph g) {
+        g.deleteEdge(this);
+    }
+
+    @Override
+    public void addYourself(Graph g) {
+        g.addEdge(this);
+    }
 }

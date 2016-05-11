@@ -1,8 +1,12 @@
 package gtb.controller.mouse;
 
+import gtb.model.Edge;
 import gtb.model.Graph;
 import gtb.model.Position;
 import gtb.model.Vertex;
+import gtb.model.operations.AddElementAction;
+import gtb.model.operations.ActionsManager;
+import gtb.model.operations.Reverseable;
 import gtb.view.GraphRenderer;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
@@ -19,34 +23,36 @@ public class NewEdgeMode implements MouseMode{
     }
 
     @Override
-    public void onPress(MouseEvent event, GraphRenderer renderer, Graph graph) {
-
+    public Reverseable onPress(MouseEvent event, GraphRenderer renderer, Graph graph) {
+        return ActionsManager.NO_ACTION;
     }
 
     @Override
-    public void onRelease(MouseEvent event, GraphRenderer renderer, Graph graph) {
+    public Reverseable onRelease(MouseEvent event, GraphRenderer renderer, Graph graph) {
         Vertex v = renderer.getVertexAt(new Position((float)event.getX(), (float)event.getY()));
-        if(v == null) return;
+        if(v == null) return ActionsManager.NO_ACTION;
         if(v1 == null) {
             v1 = v;
-            renderer.selectVertex(v);
+            renderer.selectElement(v);
             renderer.redraw();
-            return;
+            return ActionsManager.NO_ACTION;
         }
         //deselect
         if(v1 == v) {
             v1 = null;
-            renderer.selectVertex(null);
+            renderer.selectElement(null);
             renderer.redraw();
-            return;
+            return ActionsManager.NO_ACTION;
         }
+        Edge e;
         if(directed)
-            graph.addDirectedEdge(v1, v);
+            e = graph.addDirectedEdge(v1, v);
         else
-            graph.addUndirectedEdge(v1, v);
+            e = graph.addUndirectedEdge(v1, v);
         v1 = null;
-        renderer.selectVertex(null);
+        renderer.selectElement(null);
         renderer.redraw();
+        return new AddElementAction(e, graph);
     }
 
     @Override

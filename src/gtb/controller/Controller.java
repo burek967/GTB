@@ -4,6 +4,9 @@ import gtb.controller.mouse.MouseModes;
 import gtb.file_support.GraphExport;
 import gtb.file_support.GraphImport;
 import gtb.model.Graph;
+import gtb.model.GraphElement;
+import gtb.model.operations.ActionsManager;
+import gtb.model.operations.RemoveElementAction;
 import gtb.view.GraphRenderer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -26,6 +29,7 @@ public class Controller {
     private GraphRenderer renderer;
     private Graph graph;
     private MouseModes mode = MouseModes.MOVE;
+    private ActionsManager actionsManager;
 
     @FXML
     private Canvas canvas;
@@ -38,6 +42,7 @@ public class Controller {
         graph = new Graph();
         renderer = new GraphRenderer(canvas, graph);
         renderer.redraw();
+        actionsManager = new ActionsManager(graph);
     }
 
     public void setStage(Stage s){
@@ -113,6 +118,15 @@ public class Controller {
 
     public void onNewUndirectedEdgeButton() {
         mode = MouseModes.ADD_UNDIRECTED_EDGE;
+    }
+
+    public void onDeleteButton() {
+        GraphElement e = renderer.getSelectedElement();
+        if(e == null) return;
+        renderer.selectElement(null);
+        e.commitSeppuku(graph);
+        actionsManager.addOperation(new RemoveElementAction(e, graph));
+        renderer.redraw();
     }
 
     public void toggleDebugInfo() {

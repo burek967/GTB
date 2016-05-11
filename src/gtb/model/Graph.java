@@ -19,7 +19,7 @@ public class Graph {
     }
 
     public void addVertex(Vertex v) {
-        v.getData().setId(lastVertexId++);
+        //v.getData().setId(lastVertexId++);
         vertices.add(v);
     }
 
@@ -31,7 +31,7 @@ public class Graph {
     }
 
     public void addEdge(Edge e) {
-        e.getData().setId(lastEdgeId++);
+        //e.getData().setId(lastEdgeId++);
         edges.add(e);
     }
 
