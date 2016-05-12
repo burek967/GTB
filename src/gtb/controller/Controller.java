@@ -146,8 +146,7 @@ public class Controller {
         GraphElement e = renderer.getSelectedElement();
         if (e == null) return;
         renderer.selectElement(null);
-        e.commitSeppuku(graph);
-        actionsManager.addOperation(new RemoveElementAction(e, graph));
+        actionsManager.addOperation(new RemoveElementAction(e, e.commitSeppuku(graph)));
         mode.getHandlers().onElementRemoved(e);
         renderer.redraw();
     }

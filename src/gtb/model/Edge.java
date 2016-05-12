@@ -1,5 +1,8 @@
 package gtb.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by angela on 4/20/16.
  */
@@ -27,8 +30,9 @@ public class Edge extends GraphElement<EdgeData> {
     }
 
     @Override
-    public void commitSeppuku(Graph g) {
+    public List<GraphElement> commitSeppuku(Graph g) {
         g.deleteEdge(this);
+        return new ArrayList<>();
     }
 
     @Override

@@ -47,9 +47,12 @@ public class Graph {
         return e;
     }
 
-    public void deleteVertex(Vertex v) {
+    public List<Edge> deleteVertex(Vertex v) {
         vertices.remove(v);
-        edges = edges.stream().filter(e -> (e.getFirstVertex() != v && e.getSecondVertex() != v)).collect(Collectors.toList());
+        List<Edge> l1 = new ArrayList<>(), l2 = new ArrayList<>();
+        edges.stream().forEach((x) -> ((x.getFirstVertex() == v || x.getSecondVertex() == v) ? l1 : l2).add(x));
+        edges = l2;
+        return  l1;
     }
 
     public void deleteEdge(Edge e) {

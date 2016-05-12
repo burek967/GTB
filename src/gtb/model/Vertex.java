@@ -1,5 +1,7 @@
 package gtb.model;
 
+import java.util.List;
+
 /**
  * Created by angela on 4/20/16.
  */
@@ -9,8 +11,8 @@ public class Vertex extends GraphElement<VertexData> {
     }
 
     @Override
-    public void commitSeppuku(Graph g) {
-        g.deleteVertex(this);
+    public List<? extends GraphElement> commitSeppuku(Graph g) {
+        return g.deleteVertex(this);
     }
 
     @Override
