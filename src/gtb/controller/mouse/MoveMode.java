@@ -1,9 +1,6 @@
 package gtb.controller.mouse;
 
-import gtb.model.Edge;
-import gtb.model.Graph;
-import gtb.model.Position;
-import gtb.model.Vertex;
+import gtb.model.*;
 import gtb.model.operations.ActionsManager;
 import gtb.model.operations.Reverseable;
 import gtb.view.GraphRenderer;
@@ -56,5 +53,10 @@ public class MoveMode implements MouseMode {
 
     public void onScroll(ScrollEvent event, GraphRenderer renderer){
         renderer.changeScale(event.getDeltaY(),(int) event.getX(),(int) event.getY());
+    }
+
+    @Override
+    public void onElementRemoved(GraphElement e) {
+
     }
 }

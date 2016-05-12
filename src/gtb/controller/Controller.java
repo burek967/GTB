@@ -7,7 +7,6 @@ import gtb.file_support.GraphExport;
 import gtb.file_support.GraphImport;
 import gtb.model.Graph;
 import gtb.model.GraphElement;
-import gtb.model.Position;
 import gtb.model.operations.ActionsManager;
 import gtb.model.operations.RemoveElementAction;
 import gtb.view.GraphRenderer;
@@ -149,6 +148,7 @@ public class Controller {
         renderer.selectElement(null);
         e.commitSeppuku(graph);
         actionsManager.addOperation(new RemoveElementAction(e, graph));
+        mode.getHandlers().onElementRemoved(e);
         renderer.redraw();
     }
 

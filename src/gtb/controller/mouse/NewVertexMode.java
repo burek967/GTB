@@ -1,6 +1,7 @@
 package gtb.controller.mouse;
 
 import gtb.model.Graph;
+import gtb.model.GraphElement;
 import gtb.model.Position;
 import gtb.model.Vertex;
 import gtb.model.operations.AddElementAction;
@@ -37,6 +38,11 @@ public class NewVertexMode implements MouseMode {
 
     @Override
     public void onScroll(ScrollEvent event, GraphRenderer renderer) {
+
+    }
+
+    @Override
+    public void onElementRemoved(GraphElement e) {
 
     }
 }

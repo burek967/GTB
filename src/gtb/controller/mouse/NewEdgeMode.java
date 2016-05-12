@@ -1,9 +1,6 @@
 package gtb.controller.mouse;
 
-import gtb.model.Edge;
-import gtb.model.Graph;
-import gtb.model.Position;
-import gtb.model.Vertex;
+import gtb.model.*;
 import gtb.model.operations.AddElementAction;
 import gtb.model.operations.ActionsManager;
 import gtb.model.operations.Reverseable;
@@ -64,4 +61,11 @@ public class NewEdgeMode implements MouseMode{
     public void onScroll(ScrollEvent event, GraphRenderer renderer) {
 
     }
+
+    @Override
+    public void onElementRemoved(GraphElement e) {
+        if(v1 == e)
+            v1 = null;
+    }
+
 }
