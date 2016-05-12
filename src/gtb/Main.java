@@ -9,8 +9,12 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
+    public static void main(String[] args) {
+        launch(args);
+    }
+
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         final FXMLLoader loader = new FXMLLoader(getClass().getResource("gtb.fxml"));
         Parent root = loader.load();
         final Controller controller = loader.getController();
@@ -18,10 +22,5 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root, 1280, 800));
         controller.setStage(primaryStage);
         primaryStage.show();
-    }
-
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }

@@ -1,6 +1,7 @@
 package gtb.file_support;
 
-import gtb.model.*;
+import gtb.model.Graph;
+import gtb.model.Vertex;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

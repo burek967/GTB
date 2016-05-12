@@ -30,7 +30,7 @@ public class Edge extends GraphElement<EdgeData> {
     }
 
     @Override
-    public List<GraphElement> commitSeppuku(Graph g) {
+    public List<? extends GraphElement> removeYourself(Graph g) {
         g.deleteEdge(this);
         return new ArrayList<>();
     }

@@ -6,7 +6,7 @@ package gtb.model;
 public class VertexData extends GraphElementData {
     private Position position;
 
-    public VertexData(){
+    public VertexData() {
         position = new Position();
     }
 

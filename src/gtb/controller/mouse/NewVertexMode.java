@@ -4,8 +4,8 @@ import gtb.model.Graph;
 import gtb.model.GraphElement;
 import gtb.model.Position;
 import gtb.model.Vertex;
-import gtb.model.operations.AddElementAction;
 import gtb.model.operations.ActionsManager;
+import gtb.model.operations.AddElementAction;
 import gtb.model.operations.Reverseable;
 import gtb.view.GraphRenderer;
 import javafx.scene.input.MouseButton;
@@ -23,12 +23,12 @@ public class NewVertexMode implements MouseMode {
 
     @Override
     public Reverseable onRelease(MouseEvent event, GraphRenderer renderer, Graph graph) {
-        if(event.getButton() != MouseButton.PRIMARY)
+        if (event.getButton() != MouseButton.PRIMARY)
             return ActionsManager.NO_ACTION;
         Vertex v = graph.addVertex();
-        v.getData().setPosition(renderer.getPositionAt(new Position((float)event.getX(),(float) event.getY())));
+        v.getData().setPosition(renderer.getPositionAt(new Position((float) event.getX(), (float) event.getY())));
         renderer.redraw();
-        return new AddElementAction(v, graph);
+        return new AddElementAction(v);
     }
 
     @Override

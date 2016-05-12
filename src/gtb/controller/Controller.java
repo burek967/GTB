@@ -19,7 +19,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import java.io.*;
+import java.io.File;
 
 public class Controller {
 
@@ -86,7 +86,7 @@ public class Controller {
         canvas.setOnContextMenuRequested(canvasContextMenu::show);
     }
 
-    private void updateUndoRedo(GTBActionEvent event){
+    private void updateUndoRedo(GTBActionEvent event) {
         undoButton.setDisable(!actionsManager.canUndo());
         redoButton.setDisable(!actionsManager.canRedo());
         canvasContextMenu.setUndoDisable(!actionsManager.canUndo());
@@ -146,7 +146,7 @@ public class Controller {
         GraphElement e = renderer.getSelectedElement();
         if (e == null) return;
         renderer.selectElement(null);
-        actionsManager.addOperation(new RemoveElementAction(e, e.commitSeppuku(graph)));
+        actionsManager.addOperation(new RemoveElementAction(e, e.removeYourself(graph)));
         mode.getHandlers().onElementRemoved(e);
         renderer.redraw();
     }
@@ -260,17 +260,17 @@ public class Controller {
         private MenuItem vertex = new MenuItem("Vertex");
         private MenuItem undirectedEdge = new MenuItem("Undirected Edge");
         private MenuItem directedEdge = new MenuItem("Directed Edge");
-        private double x,y;
+        private double x, y;
 
-        CanvasContextMenu(){
-            this.getItems().addAll(undoButton,redoButton,new SeparatorMenuItem(),add,delete);
-            add.getItems().addAll(vertex,undirectedEdge,directedEdge);
+        CanvasContextMenu() {
+            this.getItems().addAll(undoButton, redoButton, new SeparatorMenuItem(), add, delete);
+            add.getItems().addAll(vertex, undirectedEdge, directedEdge);
             undoButton.setDisable(true);
             redoButton.setDisable(true);
             vertex.setOnAction(event -> {
                 MouseModes old = mode;
                 mode = MouseModes.ADD_VERTEX;
-                MouseEvent.fireEvent(canvas,new MouseEvent(MouseEvent.MOUSE_RELEASED,x,y,0,0,MouseButton.PRIMARY,1,false,false,false,false,false,false,false,false,false,false,null));
+                MouseEvent.fireEvent(canvas, new MouseEvent(MouseEvent.MOUSE_RELEASED, x, y, 0, 0, MouseButton.PRIMARY, 1, false, false, false, false, false, false, false, false, false, false, null));
                 mode = old;
             });
             delete.setOnAction(event -> removeSelectedElement());
@@ -285,23 +285,23 @@ public class Controller {
             setAutoHide(true);
         }
 
-        void show(ContextMenuEvent event){
+        void show(ContextMenuEvent event) {
             this.x = event.getSceneX();
             this.y = event.getSceneY();
-            show(stage.getScene().getWindow(),event.getScreenX(),event.getScreenY());
+            show(stage.getScene().getWindow(), event.getScreenX(), event.getScreenY());
             renderer.selectElement((float) (event.getX()), (float) (event.getY()));
             renderer.redraw();
         }
 
-        void setUndoDisable(boolean b){
+        void setUndoDisable(boolean b) {
             undoButton.setDisable(b);
         }
 
-        void setRedoDisable(boolean b){
+        void setRedoDisable(boolean b) {
             redoButton.setDisable(b);
         }
 
-        void setDeleteDisable(boolean b){
+        void setDeleteDisable(boolean b) {
             delete.setDisable(b);
         }
 

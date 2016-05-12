@@ -15,12 +15,12 @@ public class GraphTest {
     public void test1() {
         Graph g = new Graph();
         Vertex v[] = new Vertex[5];
-        for(int i = 0; i < 5; ++i) {
+        for (int i = 0; i < 5; ++i) {
             v[i] = new Vertex();
             g.addVertex(v[i]);
             assertEquals(i, v[i].getData().getId());
         }
-        for(int i = 0; i < 5; ++i) {
+        for (int i = 0; i < 5; ++i) {
             Edge e = g.addDirectedEdge(v[i], v[(i + 1) % 5]);
             assertEquals(i, e.getData().getId());
         }

@@ -11,7 +11,7 @@ public class Vertex extends GraphElement<VertexData> {
     }
 
     @Override
-    public List<? extends GraphElement> commitSeppuku(Graph g) {
+    public List<? extends GraphElement> removeYourself(Graph g) {
         return g.deleteVertex(this);
     }
 

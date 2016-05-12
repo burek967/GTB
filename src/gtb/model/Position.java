@@ -6,13 +6,12 @@ import java.util.Random;
  * Created by angela on 4/21/16.
  */
 public class Position {
+    private static Random rG = new Random();
     private float x, y;
 
-    private static Random rG = new Random();
-
-    public Position(){
-        this.x = rG.nextFloat()*500;
-        this.y = rG.nextFloat()*500;
+    public Position() {
+        this.x = rG.nextFloat() * 500;
+        this.y = rG.nextFloat() * 500;
     }
 
     public Position(float x, float y) {
@@ -24,12 +23,12 @@ public class Position {
         return x;
     }
 
-    public float getY() {
-        return y;
-    }
-
     public void setX(float x) {
         this.x = x;
+    }
+
+    public float getY() {
+        return y;
     }
 
     public void setY(float y) {

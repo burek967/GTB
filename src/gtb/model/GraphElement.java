@@ -16,6 +16,7 @@ public abstract class GraphElement<T extends GraphElementData> {
         this.data = data;
     }
 
-    public abstract List<? extends GraphElement> commitSeppuku(Graph g);
+    public abstract List<? extends GraphElement> removeYourself(Graph g);
+
     public abstract void addYourself(Graph g);
 }

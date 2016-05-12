@@ -7,5 +7,6 @@ import gtb.model.Graph;
  */
 public interface Reverseable {
     void reverse(Graph g);
+
     void doIt(Graph g);
 }

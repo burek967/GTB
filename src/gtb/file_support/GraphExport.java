@@ -1,7 +1,9 @@
 package gtb.file_support;
 
 
-import gtb.model.*;
+import gtb.model.Edge;
+import gtb.model.Graph;
+import gtb.model.Vertex;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -13,15 +15,16 @@ import java.util.List;
  */
 
 public class GraphExport {
-    public static void graphExport(Graph G, String path) throws FileNotFoundException, UnsupportedEncodingException{
+    public static void graphExport(Graph G, String path) throws FileNotFoundException, UnsupportedEncodingException {
         List<Vertex> vertices = G.getVertices();
         List<Edge> edges = G.getEdges();
         PrintWriter writer;
         writer = new PrintWriter(path, "UTF-8");
-        writer.println(vertices.size()+" "+edges.size());
-        for(Edge e: edges){
-            writer.println(e.getFirstVertex().getData().getId()+" "+e.getSecondVertex().getData().getId());
-            if(!e.isDirected())writer.println(e.getSecondVertex().getData().getId()+" "+e.getFirstVertex().getData().getId());
+        writer.println(vertices.size() + " " + edges.size());
+        for (Edge e : edges) {
+            writer.println(e.getFirstVertex().getData().getId() + " " + e.getSecondVertex().getData().getId());
+            if (!e.isDirected())
+                writer.println(e.getSecondVertex().getData().getId() + " " + e.getFirstVertex().getData().getId());
         }
         writer.close();
     }

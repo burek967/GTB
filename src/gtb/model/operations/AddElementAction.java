@@ -9,13 +9,13 @@ import gtb.model.GraphElement;
 public class AddElementAction implements Reverseable {
     private GraphElement e;
 
-    public AddElementAction(GraphElement e, Graph g) {
+    public AddElementAction(GraphElement e) {
         this.e = e;
     }
 
     @Override
     public void reverse(Graph g) {
-        e.commitSeppuku(g);
+        e.removeYourself(g);
     }
 
     @Override
