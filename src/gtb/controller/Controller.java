@@ -11,15 +11,23 @@ import gtb.model.operations.ActionsManager;
 import gtb.model.operations.RemoveElementAction;
 import gtb.view.GraphRenderer;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextArea;
 import javafx.scene.input.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.File;
+import java.io.FileReader;
+import java.io.StringReader;
 
 public class Controller {
 
@@ -224,7 +232,7 @@ public class Controller {
         }
     }
 
-    public void importGraph() {
+    public void importGraphFromFile() {
         FileChooser chooser = new FileChooser();
         chooser.setTitle("Import Graph from File");
         chooser.getExtensionFilters().addAll(
@@ -237,7 +245,7 @@ public class Controller {
             return;
         Graph G;
         try {
-            G = GraphImport.graphImport(selected.getAbsolutePath());
+            G = GraphImport.graphImport(new FileReader(selected));
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Import error");
@@ -249,6 +257,41 @@ public class Controller {
         graph = G;
         renderer = new GraphRenderer(canvas, G);
         renderer.redraw();
+    }
+
+    public void importGraphFromClipboard() {
+        Dialog d = new Dialog();
+        d.setTitle("Import Graph from Clipboard");
+        d.setResizable(true);
+
+        TextArea textArea = new TextArea(Clipboard.getSystemClipboard().getString());
+        textArea.setEditable(true);
+        textArea.setWrapText(false);
+        textArea.setPrefSize(400, 400);
+        textArea.setPadding(Insets.EMPTY);
+
+        ButtonType imp = new ButtonType("Import", ButtonBar.ButtonData.OK_DONE);
+        ButtonType can = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+        d.getDialogPane().setContent(textArea);
+        d.getDialogPane().getButtonTypes().setAll(imp, can);
+
+        if (d.showAndWait().get() == imp) {
+            Graph G;
+            try {
+                G = GraphImport.graphImport(new StringReader(textArea.getText()));
+            } catch (Exception e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Import error");
+                alert.setHeaderText("Something went wrong!");
+                alert.setContentText(e.toString());
+                alert.showAndWait();
+                return;
+            }
+            graph = G;
+            renderer = new GraphRenderer(canvas, G);
+            renderer.redraw();
+        }
     }
 
     private class CanvasContextMenu extends ContextMenu {

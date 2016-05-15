@@ -4,19 +4,18 @@ import gtb.model.Graph;
 import gtb.model.Vertex;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
 import java.util.List;
 
 /**
  * Created by qwerty on 2016-04-27.
  */
 public class GraphImport {
-    public static Graph graphImport(String Path) throws IOException {
-        BufferedReader br;
+    public static Graph graphImport(Reader r) throws IOException {
         Graph G = new Graph();
         String sCurrentLine;
-        br = new BufferedReader(new FileReader(Path));
+        BufferedReader br = new BufferedReader(r);
         int V, E = 0;
         if ((sCurrentLine = br.readLine()) != null) {
             int i = 0;
