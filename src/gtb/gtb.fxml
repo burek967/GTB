@@ -37,15 +37,22 @@
                                 <Insets bottom="5.0" left="5.0" right="5.0" />
                             </VBox.margin>
                         </Button>
-                        <MenuButton contentDisplay="CENTER" maxWidth="40.0" mnemonicParsing="false" popupSide="RIGHT" prefHeight="40.0" prefWidth="40.0" text=" E" textAlignment="CENTER">
-                            <items>
-                                <MenuItem mnemonicParsing="false" onAction="#onNewDirectedEdgeButton" text="Directed Edge" />
-                                <MenuItem mnemonicParsing="false" onAction="#onNewUndirectedEdgeButton" text="Undirected Edge" />
-                            </items>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onNewDirectedEdgeButton" prefHeight="40.0" prefWidth="40.0" text="DE" textAlignment="CENTER">
+                            <opaqueInsets>
+                                <Insets />
+                            </opaqueInsets>
                             <VBox.margin>
                                 <Insets bottom="5.0" left="5.0" right="5.0" />
                             </VBox.margin>
-                        </MenuButton>
+                        </Button>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onNewUndirectedEdgeButton" prefHeight="40.0" prefWidth="40.0" text="UE" textAlignment="CENTER">
+                            <opaqueInsets>
+                                <Insets />
+                            </opaqueInsets>
+                            <VBox.margin>
+                                <Insets bottom="5.0" left="5.0" right="5.0" />
+                            </VBox.margin>
+                        </Button>
                     </children>
                 </VBox>
             </children>
