@@ -101,8 +101,8 @@ public class GraphRenderer {
                 ctx.setFill(Color.GREEN);
             double xp = -arr * dx / d;
             double yp = -arr * dy / d;
-            double ypp = Math.sqrt(arr * arr * xp * xp / (yp * yp + xp * xp) * 0.25);
-            double xpp = ypp * yp / xp;
+            double ypp = xp/2;
+            double xpp = yp/2;
             double[] ptx = new double[]{
                     p2x - r * dx / d,
                     p2x - r * dx / d + xp + xpp,
