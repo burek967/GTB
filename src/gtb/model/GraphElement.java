@@ -1,11 +1,12 @@
 package gtb.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by angela on 4/20/16.
  */
-public abstract class GraphElement<T extends GraphElementData> {
+public abstract class GraphElement<T extends GraphElementData> implements Serializable{
     private T data;
 
     public T getData() {

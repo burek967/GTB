@@ -1,11 +1,12 @@
 package gtb.model;
 
+import java.io.Serializable;
 import java.util.Random;
 
 /**
  * Created by angela on 4/21/16.
  */
-public class Position {
+public class Position implements Serializable{
     private static Random rG = new Random();
     private float x, y;
 
