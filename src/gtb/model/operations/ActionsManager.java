@@ -11,7 +11,15 @@ import java.util.Stack;
  * Created by angela on 5/4/16.
  */
 public class ActionsManager {
-    public static final Reverseable NO_ACTION = new NoOperation();
+    public static final Reverseable NO_ACTION = new Reverseable() {
+        @Override
+        public void reverse(Graph g) {
+        }
+
+        @Override
+        public void doIt(Graph g) {
+        }
+    };
     private final Scene scene;
     private final MenuItem undoButton;
     private final MenuItem redoButton;
@@ -58,16 +66,9 @@ public class ActionsManager {
         GTBActionEvent.fireEvent(scene, new GTBActionEvent(GTBActionEvent.ACTION_FIRED, operation));
     }
 
-    private static class NoOperation implements Reverseable {
-
-        @Override
-        public void reverse(Graph g) {
-
-        }
-
-        @Override
-        public void doIt(Graph g) {
-
-        }
+    public void reset(Graph g) {
+        undoStack.clear();
+        redoStack.clear();
+        this.g = g;
     }
 }

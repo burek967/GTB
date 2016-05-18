@@ -257,6 +257,7 @@ public class Controller {
         graph = G;
         renderer = new GraphRenderer(canvas, G);
         renderer.redraw();
+        actionsManager.reset(G);
     }
 
     public void importGraphFromClipboard() {
@@ -291,6 +292,7 @@ public class Controller {
             graph = G;
             renderer = new GraphRenderer(canvas, G);
             renderer.redraw();
+            actionsManager.reset(G);
         }
     }
 
