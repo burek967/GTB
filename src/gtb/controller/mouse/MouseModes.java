@@ -6,19 +6,21 @@ public enum MouseModes {
     MOVE(Cursor.MOVE, new MoveMode()),
     ADD_VERTEX(Cursor.DEFAULT, new NewVertexMode()),
     ADD_DIRECTED_EDGE(Cursor.DEFAULT, new NewEdgeMode(true)),
-    ADD_UNDIRECTED_EDGE(Cursor.DEFAULT, new NewEdgeMode(false)),
-    REMOVE(Cursor.CROSSHAIR, null);
+    ADD_UNDIRECTED_EDGE(Cursor.DEFAULT, new NewEdgeMode(false));
 
     private Cursor cursor;
     private MouseMode mode;
-    MouseModes(Cursor c, MouseMode m){
+
+    MouseModes(Cursor c, MouseMode m) {
         cursor = c;
         mode = m;
     }
-    public Cursor getCursor(){
+
+    public Cursor getCursor() {
         return cursor;
     }
-    public MouseMode getHandlers(){
+
+    public MouseMode getHandlers() {
         return mode;
     }
 }

@@ -3,7 +3,6 @@ package gtb.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by angela on 4/20/16.
@@ -19,7 +18,7 @@ public class Graph {
     }
 
     public void addVertex(Vertex v) {
-        v.getData().setId(lastVertexId++);
+        //v.getData().setId(lastVertexId++);
         vertices.add(v);
     }
 
@@ -31,7 +30,7 @@ public class Graph {
     }
 
     public void addEdge(Edge e) {
-        e.getData().setId(lastEdgeId++);
+        //e.getData().setId(lastEdgeId++);
         edges.add(e);
     }
 
@@ -47,9 +46,12 @@ public class Graph {
         return e;
     }
 
-    public void deleteVertex(Vertex v) {
+    public List<Edge> deleteVertex(Vertex v) {
         vertices.remove(v);
-        edges = edges.stream().filter(e -> (e.getFirstVertex() != v && e.getSecondVertex() != v)).collect(Collectors.toList());
+        List<Edge> l1 = new ArrayList<>(), l2 = new ArrayList<>();
+        edges.stream().forEach((x) -> ((x.getFirstVertex() == v || x.getSecondVertex() == v) ? l1 : l2).add(x));
+        edges = l2;
+        return l1;
     }
 
     public void deleteEdge(Edge e) {

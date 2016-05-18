@@ -1,5 +1,8 @@
 package gtb.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by angela on 4/20/16.
  */
@@ -26,4 +29,14 @@ public class Edge extends GraphElement<EdgeData> {
         return directed;
     }
 
+    @Override
+    public List<? extends GraphElement> removeYourself(Graph g) {
+        g.deleteEdge(this);
+        return new ArrayList<>();
+    }
+
+    @Override
+    public void addYourself(Graph g) {
+        g.addEdge(this);
+    }
 }
