@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -19,7 +20,7 @@ public class Main extends Application {
         Parent root = loader.load();
         final Controller controller = loader.getController();
         primaryStage.setTitle("GTB");
-        primaryStage.setScene(new Scene(root, 1280, 800));
+        primaryStage.setScene(new Scene(root, Math.min(1280, Screen.getPrimary().getBounds().getWidth()), Math.min(800, Screen.getPrimary().getBounds().getHeight())));
         controller.setStage(primaryStage);
         primaryStage.show();
     }

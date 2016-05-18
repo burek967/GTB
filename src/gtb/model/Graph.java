@@ -1,13 +1,14 @@
 package gtb.model;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by angela on 4/20/16.
  */
-public class Graph {
+public class Graph implements Serializable{
     private List<Vertex> vertices;
     private List<Edge> edges;
     private int lastVertexId = 0, lastEdgeId = 0;

@@ -25,9 +25,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.StringReader;
+import java.io.*;
 
 public class Controller {
 
@@ -51,7 +49,6 @@ public class Controller {
     @FXML
     private MenuItem deleteButton;
 
-    @SuppressWarnings("unused")
     public void initialize() {
         graph = new Graph();
         renderer = new GraphRenderer(canvas, graph);
@@ -293,6 +290,58 @@ public class Controller {
             renderer = new GraphRenderer(canvas, G);
             renderer.redraw();
             actionsManager.reset(G);
+        }
+    }
+
+    public void openGraph(){
+        FileChooser chooser = new FileChooser();
+        chooser.setTitle("Import Graph from File");
+        chooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("GTB Graph Files", "*.gtb"),
+                new FileChooser.ExtensionFilter("All Files", "*.*")
+        );
+        chooser.setInitialDirectory(new File(System.getProperty("user.dir")));
+        File selected = chooser.showOpenDialog(stage);
+        if (selected == null)
+            return;
+        Graph G;
+        try {
+            G = (Graph) new ObjectInputStream(new FileInputStream(selected)).readObject();
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Import error");
+            alert.setHeaderText("Something went wrong!");
+            alert.setContentText(e.toString());
+            alert.showAndWait();
+            return;
+        }
+        graph = G;
+        renderer = new GraphRenderer(canvas, G);
+        renderer.redraw();
+        actionsManager.reset(G);
+    }
+
+    public void saveGraph(){
+        FileChooser chooser = new FileChooser();
+        chooser.setTitle("Export Graph to File");
+        chooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("GTB Graph Files", "*.gtb"),
+                new FileChooser.ExtensionFilter("All Files", "*.*")
+        );
+        chooser.setInitialDirectory(new File(System.getProperty("user.dir")));
+        File selected = chooser.showSaveDialog(stage);
+        if (selected == null)
+            return;
+        try {
+            ObjectOutputStream obj = new ObjectOutputStream(new FileOutputStream(selected));
+            obj.writeObject(graph);
+            obj.flush();
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Export error");
+            alert.setHeaderText("Something went wrong!");
+            alert.setContentText(e.toString());
+            alert.showAndWait();
         }
     }
 
