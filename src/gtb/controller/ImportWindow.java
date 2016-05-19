@@ -1,5 +1,6 @@
 package gtb.controller;
 
+import gtb.Main;
 import gtb.io.GraphImport;
 import gtb.model.Graph;
 import javafx.event.ActionEvent;
@@ -79,7 +80,7 @@ public class ImportWindow extends Stage {
 
     public ImportWindow(Window owner) {
         G = null;
-        final FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/layout/import.fxml"));
+        final FXMLLoader loader = new FXMLLoader(Main.class.getResource("view/layout/import.fxml"));
         Parent root;
         try {
             root = loader.load();
