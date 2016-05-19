@@ -7,9 +7,15 @@ import gtb.file_support.GraphExport;
 import gtb.file_support.GraphImport;
 import gtb.model.Graph;
 import gtb.model.GraphElement;
+import gtb.model.graph_layout.ForceDrivenLayout;
 import gtb.model.operations.ActionsManager;
 import gtb.model.operations.RemoveElementAction;
 import gtb.view.GraphRenderer;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
@@ -24,6 +30,7 @@ import javafx.scene.input.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 
 import java.io.*;
 
@@ -290,6 +297,11 @@ public class Controller {
             renderer = new GraphRenderer(canvas, G);
             renderer.redraw();
             actionsManager.reset(G);
+            ForceDrivenLayout layout = new ForceDrivenLayout();
+            Timeline timeline = new Timeline(new KeyFrame(Duration.millis(20),
+                    event -> {layout.layoutGraph(G); renderer.redraw();}));
+            timeline.setCycleCount(Animation.INDEFINITE);
+            timeline.play();
         }
     }
 
