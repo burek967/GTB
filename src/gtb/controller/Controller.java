@@ -234,34 +234,21 @@ public class Controller {
         }
     }
 
-    public void importGraphFromFile() {
-        FileChooser chooser = new FileChooser();
-        chooser.setTitle("Import Graph from File");
-        chooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Text Files", "*.txt"),
-                new FileChooser.ExtensionFilter("All Files", "*.*")
-        );
-        chooser.setInitialDirectory(new File(System.getProperty("user.dir")));
-        File selected = chooser.showOpenDialog(stage);
-        if (selected == null)
-            return;
-        Graph G;
-        try {
-            G = GraphImport.graphImport(new FileReader(selected));
-        } catch (Exception e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Import error");
-            alert.setHeaderText("Something went wrong!");
-            alert.setContentText(e.toString());
-            alert.showAndWait();
-            return;
+    public void importGraph() {
+        ImportWindow win = new ImportWindow(stage.getScene().getWindow());
+        win.showAndWait();
+        Graph G = win.getGraph();
+        if(G != null) {
+            graph = G;
+            renderer = new GraphRenderer(canvas, G);
+            renderer.redraw();
+            actionsManager.reset(G);
         }
-        graph = G;
-        renderer = new GraphRenderer(canvas, G);
-        renderer.redraw();
-        actionsManager.reset(G);
     }
 
+    /**
+     * unused, but contains some awesome code
+     *
     public void importGraphFromClipboard() {
         Dialog d = new Dialog();
         d.setTitle("Import Graph from Clipboard");
@@ -302,6 +289,7 @@ public class Controller {
             timeline.play();
         }
     }
+    */
 
     public void openGraph(){
         FileChooser chooser = new FileChooser();

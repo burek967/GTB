@@ -16,7 +16,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        final FXMLLoader loader = new FXMLLoader(getClass().getResource("gtb.fxml"));
+        final FXMLLoader loader = new FXMLLoader(getClass().getResource("view/layout/main.fxml"));
         Parent root = loader.load();
         final Controller controller = loader.getController();
         primaryStage.setTitle("GTB");
