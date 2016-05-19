@@ -12,7 +12,7 @@ import java.util.List;
  * Created by qwerty on 2016-04-27.
  */
 public class GraphImport {
-    public static Graph graphImport(Reader r) throws IOException {
+    public static Graph graphImport(Reader r, final boolean directed) throws IOException {
         Graph G = new Graph();
         String sCurrentLine;
         BufferedReader br = new BufferedReader(r);
@@ -39,7 +39,10 @@ public class GraphImport {
             int SecondVal = Integer.parseInt(sSecondVal);
             Vertex v1 = vertices.get(FirstVal);
             Vertex v2 = vertices.get(SecondVal);
-            G.addDirectedEdge(v1, v2);
+            if (directed)
+                G.addDirectedEdge(v1, v2);
+            else
+                G.addUndirectedEdge(v1, v2);
         }
         return G;
     }

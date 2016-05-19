@@ -4,7 +4,6 @@ import gtb.controller.events.GTBActionEvent;
 import gtb.controller.events.GTBSelectEvent;
 import gtb.controller.mouse.MouseModes;
 import gtb.io.GraphExport;
-import gtb.io.GraphImport;
 import gtb.model.Graph;
 import gtb.model.GraphElement;
 import gtb.model.graph_layout.ForceDrivenLayout;

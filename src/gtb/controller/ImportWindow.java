@@ -9,6 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.Clipboard;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -45,6 +46,7 @@ public class ImportWindow extends Stage {
 
     @FXML
     public void initialize() {
+        clipbrdText.setText(Clipboard.getSystemClipboard().getString());
         importType.selectedToggleProperty().addListener(observable -> {
             if (importType.getSelectedToggle() == clipbrd) {
                 clipbrdText.setDisable(false);
@@ -108,8 +110,7 @@ public class ImportWindow extends Stage {
         } else
             x = new StringReader(clipbrdText.getText());
         try {
-            G = GraphImport.graphImport(x);
-            System.out.println("assignment: "+Thread.currentThread());
+            G = GraphImport.graphImport(x, directed.isSelected());
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
