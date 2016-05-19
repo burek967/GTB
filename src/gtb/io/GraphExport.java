@@ -1,4 +1,4 @@
-package gtb.file_support;
+package gtb.io;
 
 
 import gtb.model.Edge;
