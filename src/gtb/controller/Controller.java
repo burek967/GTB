@@ -6,28 +6,17 @@ import gtb.controller.mouse.MouseModes;
 import gtb.io.GraphExport;
 import gtb.model.Graph;
 import gtb.model.GraphElement;
-import gtb.model.graph_layout.ForceDrivenLayout;
 import gtb.model.operations.ActionsManager;
 import gtb.model.operations.RemoveElementAction;
 import gtb.view.GraphRenderer;
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextArea;
 import javafx.scene.input.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.util.Duration;
 
 import java.io.*;
 
@@ -223,7 +212,29 @@ public class Controller {
         if (selected == null)
             return;
         try {
-            GraphExport.graphExport(graph, selected.getAbsolutePath());
+            GraphExport.graphExport(graph, new PrintWriter(selected.getAbsolutePath(),"UTF-8"));
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Export error");
+            alert.setHeaderText("Something went wrong!");
+            alert.setContentText(e.toString());
+            alert.showAndWait();
+        }
+    }
+
+    public void exportPsTricks() {
+        FileChooser chooser = new FileChooser();
+        chooser.setTitle("Export Graph to PSTricks");
+        chooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Text Files", "*.tex"),
+                new FileChooser.ExtensionFilter("All Files", "*.*")
+        );
+        chooser.setInitialDirectory(new File(System.getProperty("user.dir")));
+        File selected = chooser.showSaveDialog(stage);
+        if (selected == null)
+            return;
+        try {
+            GraphExport.psTricksExport(renderer, new PrintWriter(selected.getAbsolutePath(),"UTF-8"));
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Export error");

@@ -5,8 +5,6 @@ import gtb.model.Graph;
 import gtb.model.Position;
 import gtb.model.Vertex;
 
-import java.util.Random;
-
 /**
  * Algorytm o gigantycznej złożoności (na razie)
  * I jest mocno niestabilny

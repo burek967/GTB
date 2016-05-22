@@ -30,6 +30,14 @@ public class GraphRenderer {
         this.graph = graph;
     }
 
+    public Canvas getCanvas() {
+        return canvas;
+    }
+
+    public Graph getGraph() {
+        return graph;
+    }
+
     public void changeOffset(int dx, int dy) {
         xOffset -= dx;
         yOffset -= dy;
@@ -101,8 +109,8 @@ public class GraphRenderer {
                 ctx.setFill(Color.GREEN);
             double xp = -arr * dx / d;
             double yp = -arr * dy / d;
-            double ypp = xp/2;
-            double xpp = yp/2;
+            double ypp = xp / 2;
+            double xpp = yp / 2;
             double[] ptx = new double[]{
                     p2x - r * dx / d,
                     p2x - r * dx / d + xp + xpp,
@@ -217,5 +225,42 @@ public class GraphRenderer {
 
     public GraphElement getSelectedElement() {
         return selectedElement;
+    }
+
+    /**
+     * Returns an array of PSTricks coordinates of endpoints of a given edge (with flipped Y axis - thanks PSTricks).
+     *
+     * @param e Edge (x1, y1) -> (x2, y2)
+     * @return Array [x1, y1, x2, y2]
+     */
+    public Integer[] getEdgeEndpoints(Edge e) {
+        Position p1 = e.getFirstVertex().getData().getPosition();
+        Position p2 = e.getSecondVertex().getData().getPosition();
+        float p1x = scale * p1.getX() + xOffset, p1y = scale * p1.getY() + yOffset,
+                p2x = scale * p2.getX() + xOffset, p2y = scale * p2.getY() + yOffset;
+        float dx = p2x - p1x;
+        float dy = p2y - p1y;
+        float d = (float) Math.sqrt(dx * dx + dy * dy);
+        float r = scale * vertexRadius - 1;
+        return new Integer[]{
+                (int) (p1x + r * dx / d),
+                (int) (canvas.getHeight() - p1y - r * dy / d),
+                (int) (p2x - r * dx / d),
+                (int) (canvas.getHeight() - p2y + r * dy / d),
+        };
+    }
+
+    /**
+     * Returns three element array of PSTricks coordinates of given vertex and its radius.
+     *
+     * @param V Vertex (x1, y1)
+     * @return Array [x1, y1, R]
+     */
+    public Integer[] getVertexCoordinates(Vertex V) {
+        return new Integer[]{
+                (int) (scale * V.getData().getPosition().getX() + xOffset),
+                (int) (canvas.getHeight() - scale * V.getData().getPosition().getY() - yOffset),
+                (int) (scale * vertexRadius),
+        };
     }
 }

@@ -18,121 +18,101 @@
         <RowConstraints vgrow="NEVER"/>
         <RowConstraints minHeight="100.0" vgrow="ALWAYS"/>
     </rowConstraints>
-    <children>
-        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.hgrow="NEVER" GridPane.rowIndex="1"
-                    GridPane.vgrow="ALWAYS">
-            <children>
-                <VBox maxWidth="50.0" minWidth="50.0" prefHeight="775.0" prefWidth="50.0" AnchorPane.bottomAnchor="0.0"
-                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                    <children>
-                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"
-                                onAction="#onMoveButton" prefHeight="40.0" prefWidth="40.0" text="+"
-                                textAlignment="CENTER">
-                            <VBox.margin>
-                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
-                            </VBox.margin>
-                        </Button>
-                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"
-                                onAction="#onNewVertexButton" prefHeight="40.0" prefWidth="40.0" text="V"
-                                textAlignment="CENTER">
-                            <opaqueInsets>
-                                <Insets/>
-                            </opaqueInsets>
-                            <VBox.margin>
-                                <Insets bottom="5.0" left="5.0" right="5.0"/>
-                            </VBox.margin>
-                        </Button>
-                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"
-                                onAction="#onNewDirectedEdgeButton" prefHeight="40.0" prefWidth="40.0" text="DE"
-                                textAlignment="CENTER">
-                            <opaqueInsets>
-                                <Insets/>
-                            </opaqueInsets>
-                            <VBox.margin>
-                                <Insets bottom="5.0" left="5.0" right="5.0"/>
-                            </VBox.margin>
-                        </Button>
-                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"
-                                onAction="#onNewUndirectedEdgeButton" prefHeight="40.0" prefWidth="40.0" text="UE"
-                                textAlignment="CENTER">
-                            <opaqueInsets>
-                                <Insets/>
-                            </opaqueInsets>
-                            <VBox.margin>
-                                <Insets bottom="5.0" left="5.0" right="5.0"/>
-                            </VBox.margin>
-                        </Button>
-                    </children>
-                </VBox>
-            </children>
-        </AnchorPane>
-        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
-            <children>
-                <Canvas fx:id="canvas" height="775.0" onMouseDragged="#mouseOnCanvasDrag"
-                        onMouseEntered="#mouseOnCanvas" onMouseExited="#mouseOutCanvas"
-                        onMousePressed="#mouseOnCanvasPressed" onMouseReleased="#mouseOnCanvasReleased"
-                        onScroll="#mouseOnScroll" width="1225.0" AnchorPane.bottomAnchor="0.0"
-                        AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
-            </children>
-        </AnchorPane>
-        <AnchorPane GridPane.columnSpan="3" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER">
-            <children>
-                <MenuBar fx:id="menuBar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                         AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                    <rotationAxis>
-                        <Point3D/>
-                    </rotationAxis>
-                    <menus>
-                        <Menu mnemonicParsing="false" text="File">
-                            <items>
-                                <MenuItem mnemonicParsing="false" onAction="#initialize" text="New"/>
-                                <MenuItem mnemonicParsing="false" onAction="#openGraph" text="Open"/>
-                                <MenuItem mnemonicParsing="false" onAction="#saveGraph" text="Save"/>
-                                <SeparatorMenuItem mnemonicParsing="false"/>
-                                <MenuItem mnemonicParsing="false" text="Import..." onAction="#importGraph"/>
-                                <MenuItem mnemonicParsing="false" onAction="#exportGraph" text="Export..."/>
-                                <SeparatorMenuItem mnemonicParsing="false"/>
-                                <MenuItem mnemonicParsing="false" onAction="#closeEventHandler" text="Close"/>
-                            </items>
-                        </Menu>
-                        <Menu mnemonicParsing="false" text="View">
-                            <items>
-                                <RadioMenuItem fx:id="showDebugInfo" mnemonicParsing="false" onAction="#toggleDebugInfo"
-                                               text="Debug info"/>
-                            </items>
-                        </Menu>
-                        <Menu mnemonicParsing="false" text="Edit">
-                            <items>
-                                <MenuItem fx:id="undoButton" disable="true" mnemonicParsing="false" text="Undo">
-                                    <accelerator>
-                                        <KeyCodeCombination alt="UP" code="Z" control="DOWN" meta="UP" shift="UP"
-                                                            shortcut="UP"/>
-                                    </accelerator>
-                                </MenuItem>
-                                <MenuItem fx:id="redoButton" disable="true" mnemonicParsing="false" text="Redo">
-                                    <accelerator>
-                                        <KeyCodeCombination alt="UP" code="R" control="DOWN" meta="UP" shift="UP"
-                                                            shortcut="UP"/>
-                                    </accelerator>
-                                </MenuItem>
-                                <MenuItem fx:id="deleteButton" disable="true" mnemonicParsing="false"
-                                          onAction="#removeSelectedElement" text="Delete"/>
-                            </items>
-                        </Menu>
-                        <Menu mnemonicParsing="false" text="Help">
-                            <items>
-                                <MenuItem mnemonicParsing="false" onAction="#showAboutWindow" text="About"/>
-                            </items>
-                        </Menu>
-                    </menus>
-                </MenuBar>
-            </children>
-        </AnchorPane>
-        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-            <children>
-                <Separator orientation="VERTICAL" prefHeight="200.0" AnchorPane.bottomAnchor="0.0"
-                           AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
-            </children>
-        </AnchorPane>
-    </children>
+    <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.hgrow="NEVER" GridPane.rowIndex="1"
+                GridPane.vgrow="ALWAYS">
+        <VBox maxWidth="50.0" minWidth="50.0" prefHeight="775.0" prefWidth="50.0" AnchorPane.bottomAnchor="0.0"
+              AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onMoveButton"
+                    prefHeight="40.0" prefWidth="40.0" text="+" textAlignment="CENTER">
+                <VBox.margin>
+                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                </VBox.margin>
+            </Button>
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"
+                    onAction="#onNewVertexButton" prefHeight="40.0" prefWidth="40.0" text="V"
+                    textAlignment="CENTER">
+                <opaqueInsets>
+                    <Insets/>
+                </opaqueInsets>
+                <VBox.margin>
+                    <Insets bottom="5.0" left="5.0" right="5.0"/>
+                </VBox.margin>
+            </Button>
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"
+                    onAction="#onNewDirectedEdgeButton" prefHeight="40.0" prefWidth="40.0" text="DE"
+                    textAlignment="CENTER">
+                <opaqueInsets>
+                    <Insets/>
+                </opaqueInsets>
+                <VBox.margin>
+                    <Insets bottom="5.0" left="5.0" right="5.0"/>
+                </VBox.margin>
+            </Button>
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"
+                    onAction="#onNewUndirectedEdgeButton" prefHeight="40.0" prefWidth="40.0" text="UE"
+                    textAlignment="CENTER">
+                <opaqueInsets>
+                    <Insets/>
+                </opaqueInsets>
+                <VBox.margin>
+                    <Insets bottom="5.0" left="5.0" right="5.0"/>
+                </VBox.margin>
+            </Button>
+        </VBox>
+    </AnchorPane>
+    <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+        <Canvas fx:id="canvas" height="775.0" onMouseDragged="#mouseOnCanvasDrag" onMouseEntered="#mouseOnCanvas"
+                onMouseExited="#mouseOutCanvas" onMousePressed="#mouseOnCanvasPressed"
+                onMouseReleased="#mouseOnCanvasReleased" onScroll="#mouseOnScroll" width="1225.0"
+                AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                AnchorPane.topAnchor="0.0"/>
+    </AnchorPane>
+    <AnchorPane GridPane.columnSpan="3" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER">
+        <MenuBar fx:id="menuBar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                 AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <rotationAxis>
+                <Point3D/>
+            </rotationAxis>
+            <Menu mnemonicParsing="false" text="File">
+                <MenuItem mnemonicParsing="false" onAction="#initialize" text="New"/>
+                <MenuItem mnemonicParsing="false" onAction="#openGraph" text="Open"/>
+                <MenuItem mnemonicParsing="false" onAction="#saveGraph" text="Save"/>
+                <SeparatorMenuItem mnemonicParsing="false"/>
+                <MenuItem mnemonicParsing="false" onAction="#importGraph" text="Import..."/>
+                <Menu mnemonicParsing="false" text="Export">
+                    <MenuItem mnemonicParsing="false" onAction="#exportGraph" text="To File..."/>
+                    <MenuItem mnemonicParsing="false" onAction="#exportPsTricks" text="To PSTricks..."/>
+                </Menu>
+                <SeparatorMenuItem mnemonicParsing="false"/>
+                <MenuItem mnemonicParsing="false" onAction="#closeEventHandler" text="Close"/>
+            </Menu>
+            <Menu mnemonicParsing="false" text="View">
+                <RadioMenuItem fx:id="showDebugInfo" mnemonicParsing="false" onAction="#toggleDebugInfo"
+                               text="Debug info"/>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Edit">
+                <MenuItem fx:id="undoButton" disable="true" mnemonicParsing="false" text="Undo">
+                    <accelerator>
+                        <KeyCodeCombination alt="UP" code="Z" control="DOWN" meta="UP" shift="UP"
+                                            shortcut="UP"/>
+                    </accelerator>
+                </MenuItem>
+                <MenuItem fx:id="redoButton" disable="true" mnemonicParsing="false" text="Redo">
+                    <accelerator>
+                        <KeyCodeCombination alt="UP" code="R" control="DOWN" meta="UP" shift="UP"
+                                            shortcut="UP"/>
+                    </accelerator>
+                </MenuItem>
+                <MenuItem fx:id="deleteButton" disable="true" mnemonicParsing="false"
+                          onAction="#removeSelectedElement" text="Delete"/>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Help">
+                <MenuItem mnemonicParsing="false" onAction="#showAboutWindow" text="About"/>
+            </Menu>
+        </MenuBar>
+    </AnchorPane>
+    <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+        <Separator orientation="VERTICAL" prefHeight="200.0" AnchorPane.bottomAnchor="0.0"
+                   AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+    </AnchorPane>
 </GridPane>
