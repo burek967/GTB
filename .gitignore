@@ -1,5 +1,8 @@
 out/
 
+# THANKS MICROSOFT
+**/Thumbs.db
+
 # User-specific stuff:
 .idea/workspace.xml
 .idea/tasks.xml

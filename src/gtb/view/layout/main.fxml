@@ -10,7 +10,8 @@
 <?import javafx.scene.image.ImageView?>
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
           onKeyPressed="#onKeyPressed" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8"
-          xmlns:fx="http://javafx.com/fxml/1" fx:controller="gtb.controller.Controller" stylesheets="stylesheets/main.css">
+          xmlns:fx="http://javafx.com/fxml/1" fx:controller="gtb.controller.Controller"
+          stylesheets="/stylesheets/main.css">
     <columnConstraints>
         <ColumnConstraints hgrow="NEVER" maxWidth="50.0" minWidth="50.0" prefWidth="50.0"/>
         <ColumnConstraints fillWidth="false" hgrow="NEVER" maxWidth="5.0" minWidth="5.0" prefWidth="5.0"/>
@@ -25,10 +26,10 @@
         <VBox maxWidth="50.0" minWidth="50.0" prefHeight="775.0" prefWidth="50.0" AnchorPane.bottomAnchor="0.0"
               AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onMoveButton"
-                    prefHeight="40.0" prefWidth="40.0" textAlignment="CENTER" styleClass="bigButton">
+                    prefHeight="40.0" prefWidth="40.0" styleClass="bigButton">
                 <graphic>
                     <ImageView fitWidth="40.0" fitHeight="40.0" pickOnBounds="true" preserveRatio="true">
-                        <Image url="icons/move.png"/>
+                        <Image url="/icons/move.png"/>
                     </ImageView>
                 </graphic>
                 <VBox.margin>
@@ -39,7 +40,7 @@
                     onAction="#onNewVertexButton" prefHeight="40.0" prefWidth="40.0" styleClass="bigButton">
                 <graphic>
                     <ImageView fitWidth="40.0" fitHeight="40.0" pickOnBounds="true" preserveRatio="true">
-                        <Image url="icons/vertex.png"/>
+                        <Image url="/icons/vertex.png"/>
                     </ImageView>
                 </graphic>
                 <VBox.margin>
@@ -48,10 +49,10 @@
             </Button>
             <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"
                     onAction="#onNewDirectedEdgeButton" prefHeight="40.0" prefWidth="40.0"
-                    textAlignment="CENTER" styleClass="bigButton">
+                    styleClass="bigButton">
                 <graphic>
                     <ImageView fitWidth="40.0" fitHeight="40.0" pickOnBounds="true" preserveRatio="true">
-                        <Image url="icons/directed_edge.png"/>
+                        <Image url="/icons/directed_edge.png"/>
                     </ImageView>
                 </graphic>
                 <VBox.margin>
@@ -60,10 +61,10 @@
             </Button>
             <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"
                     onAction="#onNewUndirectedEdgeButton" prefHeight="40.0" prefWidth="40.0"
-                    textAlignment="CENTER" styleClass="bigButton">
+                    styleClass="bigButton">
                 <graphic>
                     <ImageView fitWidth="40.0" fitHeight="40.0" pickOnBounds="true" preserveRatio="true">
-                        <Image url="icons/undirected_edge.png"/>
+                        <Image url="/icons/undirected_edge.png"/>
                     </ImageView>
                 </graphic>
                 <VBox.margin>
