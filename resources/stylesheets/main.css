@@ -1,0 +1,16 @@
+.bigButton {
+    -fx-background-insets: 0, 1.5;
+    -fx-background-radius: 20, 20;
+    -fx-background-color: transparent, transparent;
+    -fx-padding: 0px !important;
+}
+
+.bigButton:hover {
+    -fx-background-color:
+        white, transparent;
+}
+
+.bigButton:focused {
+    -fx-background-color:
+        -fx-focus-color, transparent;
+}

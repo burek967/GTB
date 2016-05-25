@@ -10,6 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.input.Clipboard;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -79,6 +80,7 @@ public class ImportWindow extends Stage {
     }
 
     public ImportWindow(Window owner) {
+        this.getIcons().setAll(new Image("icons/icon.png"));
         G = null;
         final FXMLLoader loader = new FXMLLoader(Main.class.getResource("view/layout/import.fxml"));
         Parent root;
