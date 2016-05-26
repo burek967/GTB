@@ -15,7 +15,7 @@ import java.util.HashMap;
  */
 public class ForceDrivenLayout implements GraphLayout {
     private HashMap<Vertex, ArrayList<Vertex>> hm;
-
+    private static final int ITERATIONS = 100;
     public void tick(Graph g) {
         for (Vertex v1 : g.getVertices()) {
             Position p1 = v1.getData().getPosition();
@@ -57,6 +57,7 @@ public class ForceDrivenLayout implements GraphLayout {
             hm.get(e.getFirstVertex()).add(e.getSecondVertex());
             hm.get(e.getSecondVertex()).add(e.getFirstVertex());
         }
-        tick(g);
+        for(int i = 0; i < ITERATIONS; ++i)
+            tick(g);
     }
 }

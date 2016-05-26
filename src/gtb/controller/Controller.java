@@ -6,6 +6,7 @@ import gtb.controller.mouse.MouseModes;
 import gtb.io.GraphExport;
 import gtb.model.Graph;
 import gtb.model.GraphElement;
+import gtb.model.graph_layout.ForceDrivenLayout;
 import gtb.model.operations.ActionsManager;
 import gtb.model.operations.RemoveElementAction;
 import gtb.view.GraphRenderer;
@@ -251,6 +252,8 @@ public class Controller {
         if(G != null) {
             graph = G;
             renderer = new GraphRenderer(canvas, G);
+            ForceDrivenLayout layout = new ForceDrivenLayout();
+            layout.layoutGraph(G);
             renderer.redraw();
             actionsManager.reset(G);
         }
