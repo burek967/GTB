@@ -166,6 +166,10 @@ public class Controller {
         mode = MouseModes.ADD_UNDIRECTED_EDGE;
     }
 
+    public void onEditButton() {
+        mode = MouseModes.EDIT;
+    }
+
     public void toggleDebugInfo() {
         renderer.setDebugInfo(showDebugInfo.isSelected());
     }

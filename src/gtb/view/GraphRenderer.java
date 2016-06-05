@@ -132,7 +132,7 @@ public class GraphRenderer {
         float r = scale * vertexRadius;
         float x = scale * p.getX() + xOffset, y = scale * p.getY() + yOffset;
 
-        ctx.setFill(Color.GREENYELLOW);
+        ctx.setFill(v.getData().getColor());
         ctx.fillOval(x - r, y - r, 2 * r, 2 * r);
 
         if (v == selectedElement) {
@@ -145,12 +145,12 @@ public class GraphRenderer {
                     CycleMethod.REFLECT, new Stop(0, new Color(1, 1, 1, 0.5)), new Stop(0.7, Color.TRANSPARENT)));
             ctx.fillOval(x - r, y - r, 2 * r, 2 * r);
         } else {
-            ctx.setStroke(Color.GREEN);
+            ctx.setStroke(v.getData().getColor().darker());
             ctx.strokeOval(x - r, y - r, 2 * r, 2 * r);
         }
 
         ctx.setFill(Color.BLACK);
-        ctx.fillText(String.valueOf(v.getData().getId()), x, y);
+        ctx.fillText(v.getData().getLabel(), x, y);
     }
 
     /**
