@@ -6,6 +6,7 @@ import gtb.model.Vertex;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -27,6 +28,7 @@ public class GraphImport {
             for (i = 0; i < V; i++) G.addVertex();
         }
         List<Vertex> vertices = G.getVertices();
+        Collections.sort(vertices);
         int j = 0;
         while ((sCurrentLine = br.readLine()) != null) {
             if (j > E) return null;
