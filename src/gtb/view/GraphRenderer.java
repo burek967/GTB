@@ -12,6 +12,7 @@ import javafx.scene.paint.RadialGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
+import javafx.scene.transform.Rotate;
 
 public class GraphRenderer {
     private static final float arrowSize = 15, vertexRadius = 20;
@@ -90,7 +91,7 @@ public class GraphRenderer {
         if (selectedElement == e)
             ctx.setStroke(Color.RED);
         else
-            ctx.setStroke(Color.GREEN);
+            ctx.setStroke(e.getData().getColor());
         Position p1 = e.getFirstVertex().getData().getPosition();
         Position p2 = e.getSecondVertex().getData().getPosition();
         float p1x = scale * p1.getX() + xOffset, p1y = scale * p1.getY() + yOffset,
@@ -102,11 +103,23 @@ public class GraphRenderer {
         float arr = Math.min(scale, 1.5f) * arrowSize;
         ctx.strokeLine(p1x + r * dx / d, p1y + r * dy / d,
                 p2x - r * dx / d, p2y - r * dy / d);
+
+        ctx.setFill(e.getData().getTextColor());
+        double k;
+        if(p2x > p1x)
+            k = Math.atan2(p2y-p1y, p2x-p1x);
+        else
+            k = Math.atan2(p1y-p2y, p1x-p2x);
+        Rotate rot = new Rotate(Math.toDegrees(k), (p1x+p2x)/2, (p1y+p2y)/2);
+        ctx.setTransform(rot.getMxx(), rot.getMyx(), rot.getMxy(), rot.getMyy(), rot.getTx(), rot.getTy());
+        ctx.fillText(e.getData().getLabel(), (p1x+p2x)/2, (p1y+p2y-20)/2);
+        rot.setAngle(0);
+        ctx.setTransform(rot.getMxx(), rot.getMyx(), rot.getMxy(), rot.getMyy(), rot.getTx(), rot.getTy());
         if (e.isDirected()) {
             if (selectedElement == e)
                 ctx.setFill(Color.RED);
             else
-                ctx.setFill(Color.GREEN);
+                ctx.setFill(e.getData().getColor());
             double xp = -arr * dx / d;
             double yp = -arr * dy / d;
             double ypp = xp / 2;
@@ -149,7 +162,7 @@ public class GraphRenderer {
             ctx.strokeOval(x - r, y - r, 2 * r, 2 * r);
         }
 
-        ctx.setFill(Color.BLACK);
+        ctx.setFill(v.getData().getTextColor());
         ctx.fillText(v.getData().getLabel(), x, y);
     }
 

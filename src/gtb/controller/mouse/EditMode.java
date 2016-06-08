@@ -24,16 +24,16 @@ public class EditMode implements MouseMode {
         int x = (int) event.getX();
         int y = (int) event.getY();
         Position p = new Position(x, y);
-        Vertex vertex = renderer.getVertexAt(p);
-        if (vertex == null) {
-            Edge selectedEdge = renderer.getEdgeAt(p);
-            renderer.selectElement(selectedEdge);
-        }
-        else {
-            EditWindow win = new EditWindow(((Node)event.getSource()).getScene().getWindow(), vertex.getData());
-            win.showAndWait();
-            renderer.redraw();
-        }
+        GraphElement e = renderer.getVertexAt(p);
+        if (e == null)
+           e = renderer.getEdgeAt(p);
+        renderer.selectElement(e);
+        renderer.redraw();
+
+        if(e == null) return  ActionsManager.NO_ACTION;
+
+        EditWindow win = new EditWindow(((Node)event.getSource()).getScene().getWindow(), e.getData());
+        win.showAndWait();
         renderer.redraw();
         return ActionsManager.NO_ACTION;
     }

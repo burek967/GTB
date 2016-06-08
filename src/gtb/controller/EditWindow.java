@@ -1,8 +1,6 @@
 package gtb.controller;
 
 import gtb.Main;
-import gtb.model.Graph;
-import gtb.model.GraphElement;
 import gtb.model.GraphElementData;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,7 +11,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextField;
-import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -31,7 +28,9 @@ public class EditWindow extends Stage {
     @FXML
     public Button cancelButton;
     @FXML
-    public ColorPicker colorPicker;
+    public ColorPicker elementColorPicker;
+    @FXML
+    public ColorPicker textColorPicker;
     @FXML
     public TextField textField;
 
@@ -43,13 +42,15 @@ public class EditWindow extends Stage {
 
     private void setElement(ActionEvent event) {
         elementData.setLabel(textField.getText());
-        elementData.setColor(colorPicker.getValue());
+        elementData.setColor(elementColorPicker.getValue());
+        elementData.setTextColor(textColorPicker.getValue());
         ((Node) event.getSource()).getScene().getWindow().hide();
     }
 
     public void setElement(GraphElementData elementData) {
         this.elementData = elementData;
-        colorPicker.setValue(elementData.getColor());
+        elementColorPicker.setValue(elementData.getColor());
+        textColorPicker.setValue(elementData.getTextColor());
         textField.setText(elementData.getLabel());
     }
 
@@ -69,7 +70,7 @@ public class EditWindow extends Stage {
         this.setTitle("Edit element");
         this.initModality(Modality.WINDOW_MODAL);
         loader.<EditWindow>getController().setElement(data);
-        this.setScene(new Scene(root, 300, 150));
+        this.setScene(new Scene(root, 300, 200));
         this.initOwner(owner);
     }
 }

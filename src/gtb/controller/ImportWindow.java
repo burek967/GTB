@@ -119,6 +119,7 @@ public class ImportWindow extends Stage {
             alert.setTitle("Error");
             alert.setHeaderText("Invalid input");
             alert.setContentText("Given input couldn't be parsed as valid graph.");
+            e.printStackTrace();
             alert.showAndWait();
             return;
         }

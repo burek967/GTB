@@ -7,10 +7,9 @@ import java.io.Serializable;
 /**
  * Created by angela on 4/20/16.
  */
-public class GraphElementData implements Serializable{
-    public static final Color DEFAULT_COLOR = Color.GREENYELLOW;
+public abstract class GraphElementData implements Serializable{
     private int id;
-    private Color color;
+    private Color color, textColor;
     private String label;
 
     public int getId() {
@@ -21,10 +20,26 @@ public class GraphElementData implements Serializable{
         this.id = id;
     }
 
+    public abstract Color getDefaultColor();
+
+    public abstract String getDefaultLabel();
+
+    public abstract Color getDefaultTextColor();
+
     public Color getColor() {
         if(color == null)
-            return DEFAULT_COLOR;
+            return getDefaultColor();
         return color;
+    }
+
+    public Color getTextColor() {
+        if(textColor == null)
+            return getDefaultTextColor();
+        return textColor;
+    }
+
+    public void setTextColor(Color color) {
+        textColor = color;
     }
 
     public void setColor(Color color) {
@@ -33,7 +48,7 @@ public class GraphElementData implements Serializable{
 
     public String getLabel() {
         if(label == null)
-            return String.valueOf(id);
+            return getDefaultLabel();
         return label;
     }
 
