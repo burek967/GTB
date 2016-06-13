@@ -12,6 +12,7 @@ import javafx.scene.paint.RadialGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
+import javafx.scene.transform.Rotate;
 
 public class GraphRenderer {
     private static final float arrowSize = 15, vertexRadius = 20;
@@ -28,6 +29,14 @@ public class GraphRenderer {
         canvas = c;
         ctx = canvas.getGraphicsContext2D();
         this.graph = graph;
+    }
+
+    public Canvas getCanvas() {
+        return canvas;
+    }
+
+    public Graph getGraph() {
+        return graph;
     }
 
     public void changeOffset(int dx, int dy) {
@@ -82,7 +91,7 @@ public class GraphRenderer {
         if (selectedElement == e)
             ctx.setStroke(Color.RED);
         else
-            ctx.setStroke(Color.GREEN);
+            ctx.setStroke(e.getData().getColor());
         Position p1 = e.getFirstVertex().getData().getPosition();
         Position p2 = e.getSecondVertex().getData().getPosition();
         float p1x = scale * p1.getX() + xOffset, p1y = scale * p1.getY() + yOffset,
@@ -94,15 +103,27 @@ public class GraphRenderer {
         float arr = Math.min(scale, 1.5f) * arrowSize;
         ctx.strokeLine(p1x + r * dx / d, p1y + r * dy / d,
                 p2x - r * dx / d, p2y - r * dy / d);
+
+        ctx.setFill(e.getData().getTextColor());
+        double k;
+        if(p2x > p1x)
+            k = Math.atan2(p2y-p1y, p2x-p1x);
+        else
+            k = Math.atan2(p1y-p2y, p1x-p2x);
+        Rotate rot = new Rotate(Math.toDegrees(k), (p1x+p2x)/2, (p1y+p2y)/2);
+        ctx.setTransform(rot.getMxx(), rot.getMyx(), rot.getMxy(), rot.getMyy(), rot.getTx(), rot.getTy());
+        ctx.fillText(e.getData().getLabel(), (p1x+p2x)/2, (p1y+p2y-20)/2);
+        rot.setAngle(0);
+        ctx.setTransform(rot.getMxx(), rot.getMyx(), rot.getMxy(), rot.getMyy(), rot.getTx(), rot.getTy());
         if (e.isDirected()) {
             if (selectedElement == e)
                 ctx.setFill(Color.RED);
             else
-                ctx.setFill(Color.GREEN);
+                ctx.setFill(e.getData().getColor());
             double xp = -arr * dx / d;
             double yp = -arr * dy / d;
-            double ypp = xp/2;
-            double xpp = yp/2;
+            double ypp = xp / 2;
+            double xpp = yp / 2;
             double[] ptx = new double[]{
                     p2x - r * dx / d,
                     p2x - r * dx / d + xp + xpp,
@@ -124,7 +145,7 @@ public class GraphRenderer {
         float r = scale * vertexRadius;
         float x = scale * p.getX() + xOffset, y = scale * p.getY() + yOffset;
 
-        ctx.setFill(Color.GREENYELLOW);
+        ctx.setFill(v.getData().getColor());
         ctx.fillOval(x - r, y - r, 2 * r, 2 * r);
 
         if (v == selectedElement) {
@@ -137,12 +158,12 @@ public class GraphRenderer {
                     CycleMethod.REFLECT, new Stop(0, new Color(1, 1, 1, 0.5)), new Stop(0.7, Color.TRANSPARENT)));
             ctx.fillOval(x - r, y - r, 2 * r, 2 * r);
         } else {
-            ctx.setStroke(Color.GREEN);
+            ctx.setStroke(v.getData().getColor().darker());
             ctx.strokeOval(x - r, y - r, 2 * r, 2 * r);
         }
 
-        ctx.setFill(Color.BLACK);
-        ctx.fillText(String.valueOf(v.getData().getId()), x, y);
+        ctx.setFill(v.getData().getTextColor());
+        ctx.fillText(v.getData().getLabel(), x, y);
     }
 
     /**
@@ -217,5 +238,42 @@ public class GraphRenderer {
 
     public GraphElement getSelectedElement() {
         return selectedElement;
+    }
+
+    /**
+     * Returns an array of PSTricks coordinates of endpoints of a given edge (with flipped Y axis - thanks PSTricks).
+     *
+     * @param e Edge (x1, y1) -> (x2, y2)
+     * @return Array [x1, y1, x2, y2]
+     */
+    public Integer[] getEdgeEndpoints(Edge e) {
+        Position p1 = e.getFirstVertex().getData().getPosition();
+        Position p2 = e.getSecondVertex().getData().getPosition();
+        float p1x = scale * p1.getX() + xOffset, p1y = scale * p1.getY() + yOffset,
+                p2x = scale * p2.getX() + xOffset, p2y = scale * p2.getY() + yOffset;
+        float dx = p2x - p1x;
+        float dy = p2y - p1y;
+        float d = (float) Math.sqrt(dx * dx + dy * dy);
+        float r = scale * vertexRadius - 1;
+        return new Integer[]{
+                (int) (p1x + r * dx / d),
+                (int) (canvas.getHeight() - p1y - r * dy / d),
+                (int) (p2x - r * dx / d),
+                (int) (canvas.getHeight() - p2y + r * dy / d),
+        };
+    }
+
+    /**
+     * Returns three element array of PSTricks coordinates of given vertex and its radius.
+     *
+     * @param V Vertex (x1, y1)
+     * @return Array [x1, y1, R]
+     */
+    public Integer[] getVertexCoordinates(Vertex V) {
+        return new Integer[]{
+                (int) (scale * V.getData().getPosition().getX() + xOffset),
+                (int) (canvas.getHeight() - scale * V.getData().getPosition().getY() - yOffset),
+                (int) (scale * vertexRadius),
+        };
     }
 }

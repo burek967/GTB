@@ -5,7 +5,11 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
+
+import java.io.File;
 
 public class Main extends Application {
 
@@ -15,12 +19,13 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        final FXMLLoader loader = new FXMLLoader(getClass().getResource("gtb.fxml"));
+        final FXMLLoader loader = new FXMLLoader(getClass().getResource("view/layout/main.fxml"));
         Parent root = loader.load();
         final Controller controller = loader.getController();
         primaryStage.setTitle("GTB");
-        primaryStage.setScene(new Scene(root, 1280, 800));
+        primaryStage.setScene(new Scene(root, Math.min(1280, Screen.getPrimary().getBounds().getWidth()), Math.min(800, Screen.getPrimary().getBounds().getHeight())));
         controller.setStage(primaryStage);
+        primaryStage.getIcons().setAll(new Image("icons/icon.png"));
         primaryStage.show();
     }
 }

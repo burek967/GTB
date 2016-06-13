@@ -1,4 +1,4 @@
-package gtb.file_support;
+package gtb.io;
 
 import gtb.model.Graph;
 import gtb.model.Vertex;
@@ -6,13 +6,14 @@ import gtb.model.Vertex;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Created by qwerty on 2016-04-27.
  */
 public class GraphImport {
-    public static Graph graphImport(Reader r) throws IOException {
+    public static Graph graphImport(Reader r, final boolean directed) throws IOException {
         Graph G = new Graph();
         String sCurrentLine;
         BufferedReader br = new BufferedReader(r);
@@ -27,6 +28,7 @@ public class GraphImport {
             for (i = 0; i < V; i++) G.addVertex();
         }
         List<Vertex> vertices = G.getVertices();
+        Collections.sort(vertices);
         int j = 0;
         while ((sCurrentLine = br.readLine()) != null) {
             if (j > E) return null;
@@ -39,7 +41,10 @@ public class GraphImport {
             int SecondVal = Integer.parseInt(sSecondVal);
             Vertex v1 = vertices.get(FirstVal);
             Vertex v2 = vertices.get(SecondVal);
-            G.addDirectedEdge(v1, v2);
+            if (directed)
+                G.addDirectedEdge(v1, v2);
+            else
+                G.addUndirectedEdge(v1, v2);
         }
         return G;
     }

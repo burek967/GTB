@@ -1,48 +1,54 @@
 package gtb.model;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
  * Created by angela on 4/20/16.
  */
-public class Graph {
-    private List<Vertex> vertices;
+public class Graph implements Serializable{
+    private HashMap<Vertex, List<Vertex>> vertices;
     private List<Edge> edges;
-    private int lastVertexId = 0, lastEdgeId = 0;
+    private int lastVertexId = 0;
 
     public Graph() {
-        vertices = new ArrayList<>();
+        vertices = new HashMap<>();
         edges = new ArrayList<>();
     }
 
     public void addVertex(Vertex v) {
-        //v.getData().setId(lastVertexId++);
-        vertices.add(v);
+        vertices.put(v, new ArrayList<>());
     }
 
     public Vertex addVertex() {
         Vertex v = new Vertex();
         v.getData().setId(lastVertexId++);
-        vertices.add(v);
+        vertices.put(v, new ArrayList<>());
         return v;
     }
 
     public void addEdge(Edge e) {
-        //e.getData().setId(lastEdgeId++);
         edges.add(e);
+        vertices.get(e.getFirstVertex()).add(e.getSecondVertex());
+        if(!e.isDirected())
+            vertices.get(e.getSecondVertex()).add(e.getFirstVertex());
     }
 
     public Edge addDirectedEdge(Vertex v1, Vertex v2) {
         Edge e = new Edge(v1, v2, true);
         addEdge(e);
+        vertices.get(v1).add(v2);
         return e;
     }
 
     public Edge addUndirectedEdge(Vertex v1, Vertex v2) {
         Edge e = new Edge(v1, v2, false);
         addEdge(e);
+        vertices.get(v1).add(v2);
+        vertices.get(v2).add(v1);
         return e;
     }
 
@@ -51,6 +57,7 @@ public class Graph {
         List<Edge> l1 = new ArrayList<>(), l2 = new ArrayList<>();
         edges.stream().forEach((x) -> ((x.getFirstVertex() == v || x.getSecondVertex() == v) ? l1 : l2).add(x));
         edges = l2;
+        vertices.remove(v);
         return l1;
     }
 
@@ -59,10 +66,15 @@ public class Graph {
     }
 
     public List<Vertex> getVertices() {
-        return vertices;
+        return new ArrayList<>(vertices.keySet());
     }
 
     public List<Edge> getEdges() {
         return edges;
     }
+
+    public List<Vertex> getVerticesConnectedWith(Vertex v) {
+        return vertices.get(v);
+    }
+
 }

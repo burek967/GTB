@@ -3,31 +3,23 @@ package gtb.controller;
 import gtb.controller.events.GTBActionEvent;
 import gtb.controller.events.GTBSelectEvent;
 import gtb.controller.mouse.MouseModes;
-import gtb.file_support.GraphExport;
-import gtb.file_support.GraphImport;
+import gtb.io.GraphExport;
 import gtb.model.Graph;
 import gtb.model.GraphElement;
+import gtb.model.graph_layout.ForceDrivenLayout;
 import gtb.model.operations.ActionsManager;
 import gtb.model.operations.RemoveElementAction;
 import gtb.view.GraphRenderer;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextArea;
 import javafx.scene.input.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.StringReader;
+import java.io.*;
 
 public class Controller {
 
@@ -51,7 +43,6 @@ public class Controller {
     @FXML
     private MenuItem deleteButton;
 
-    @SuppressWarnings("unused")
     public void initialize() {
         graph = new Graph();
         renderer = new GraphRenderer(canvas, graph);
@@ -175,6 +166,10 @@ public class Controller {
         mode = MouseModes.ADD_UNDIRECTED_EDGE;
     }
 
+    public void onEditButton() {
+        mode = MouseModes.EDIT;
+    }
+
     public void toggleDebugInfo() {
         renderer.setDebugInfo(showDebugInfo.isSelected());
     }
@@ -222,7 +217,7 @@ public class Controller {
         if (selected == null)
             return;
         try {
-            GraphExport.graphExport(graph, selected.getAbsolutePath());
+            GraphExport.graphExport(graph, new PrintWriter(selected.getAbsolutePath(),"UTF-8"));
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Export error");
@@ -232,34 +227,45 @@ public class Controller {
         }
     }
 
-    public void importGraphFromFile() {
+    public void exportPsTricks() {
         FileChooser chooser = new FileChooser();
-        chooser.setTitle("Import Graph from File");
+        chooser.setTitle("Export Graph to PSTricks");
         chooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Text Files", "*.txt"),
+                new FileChooser.ExtensionFilter("Text Files", "*.tex"),
                 new FileChooser.ExtensionFilter("All Files", "*.*")
         );
         chooser.setInitialDirectory(new File(System.getProperty("user.dir")));
-        File selected = chooser.showOpenDialog(stage);
+        File selected = chooser.showSaveDialog(stage);
         if (selected == null)
             return;
-        Graph G;
         try {
-            G = GraphImport.graphImport(new FileReader(selected));
+            GraphExport.psTricksExport(renderer, new PrintWriter(selected.getAbsolutePath(),"UTF-8"));
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Import error");
+            alert.setTitle("Export error");
             alert.setHeaderText("Something went wrong!");
             alert.setContentText(e.toString());
             alert.showAndWait();
-            return;
         }
-        graph = G;
-        renderer = new GraphRenderer(canvas, G);
-        renderer.redraw();
-        actionsManager.reset(G);
     }
 
+    public void importGraph() {
+        ImportWindow win = new ImportWindow(stage.getScene().getWindow());
+        win.showAndWait();
+        Graph G = win.getGraph();
+        if(G != null) {
+            graph = G;
+            renderer = new GraphRenderer(canvas, G);
+            ForceDrivenLayout layout = new ForceDrivenLayout();
+            layout.layoutGraph(G);
+            renderer.redraw();
+            actionsManager.reset(G);
+        }
+    }
+
+    /**
+     * unused, but contains some awesome code
+     *
     public void importGraphFromClipboard() {
         Dialog d = new Dialog();
         d.setTitle("Import Graph from Clipboard");
@@ -293,6 +299,64 @@ public class Controller {
             renderer = new GraphRenderer(canvas, G);
             renderer.redraw();
             actionsManager.reset(G);
+            ForceDrivenLayout layout = new ForceDrivenLayout();
+            Timeline timeline = new Timeline(new KeyFrame(Duration.millis(20),
+                    event -> {layout.layoutGraph(G); renderer.redraw();}));
+            timeline.setCycleCount(Animation.INDEFINITE);
+            timeline.play();
+        }
+    }
+    */
+
+    public void openGraph(){
+        FileChooser chooser = new FileChooser();
+        chooser.setTitle("Import Graph from File");
+        chooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("GTB Graph Files", "*.gtb"),
+                new FileChooser.ExtensionFilter("All Files", "*.*")
+        );
+        chooser.setInitialDirectory(new File(System.getProperty("user.dir")));
+        File selected = chooser.showOpenDialog(stage);
+        if (selected == null)
+            return;
+        Graph G;
+        try {
+            G = (Graph) new ObjectInputStream(new FileInputStream(selected)).readObject();
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Import error");
+            alert.setHeaderText("Something went wrong!");
+            alert.setContentText(e.toString());
+            alert.showAndWait();
+            return;
+        }
+        graph = G;
+        renderer = new GraphRenderer(canvas, G);
+        renderer.redraw();
+        actionsManager.reset(G);
+    }
+
+    public void saveGraph(){
+        FileChooser chooser = new FileChooser();
+        chooser.setTitle("Export Graph to File");
+        chooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("GTB Graph Files", "*.gtb"),
+                new FileChooser.ExtensionFilter("All Files", "*.*")
+        );
+        chooser.setInitialDirectory(new File(System.getProperty("user.dir")));
+        File selected = chooser.showSaveDialog(stage);
+        if (selected == null)
+            return;
+        try {
+            ObjectOutputStream obj = new ObjectOutputStream(new FileOutputStream(selected));
+            obj.writeObject(graph);
+            obj.flush();
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Export error");
+            alert.setHeaderText("Something went wrong!");
+            alert.setContentText(e.toString());
+            alert.showAndWait();
         }
     }
 
