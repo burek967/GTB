@@ -433,7 +433,6 @@ public class Controller {
                     event.consume();
                     return;
                 }
-                System.out.println("dir");
                 ((NewEdgeMode) MouseModes.ADD_DIRECTED_EDGE.getHandlers()).setOldMode(mode);
                 ((NewEdgeMode) MouseModes.ADD_DIRECTED_EDGE.getHandlers()).setVertex((Vertex) renderer.getSelectedElement());
                 setMode(MouseModes.ADD_DIRECTED_EDGE);
