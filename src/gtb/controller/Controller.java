@@ -3,9 +3,11 @@ package gtb.controller;
 import gtb.controller.events.GTBActionEvent;
 import gtb.controller.events.GTBSelectEvent;
 import gtb.controller.mouse.MouseModes;
+import gtb.controller.mouse.NewEdgeMode;
 import gtb.io.GraphExport;
 import gtb.model.Graph;
 import gtb.model.GraphElement;
+import gtb.model.Vertex;
 import gtb.model.graph_layout.ForceDrivenLayout;
 import gtb.model.operations.ActionsManager;
 import gtb.model.operations.RemoveElementAction;
@@ -20,6 +22,8 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Controller {
 
@@ -29,7 +33,18 @@ public class Controller {
     private MouseModes mode = MouseModes.MOVE;
     private ActionsManager actionsManager;
     private CanvasContextMenu canvasContextMenu;
+    private Map<MouseModes, Button> buttons;
 
+    @FXML
+    public Button MButton;
+    @FXML
+    public Button VButton;
+    @FXML
+    public Button DEButton;
+    @FXML
+    public Button UEButton;
+    @FXML
+    public Button EButton;
     @FXML
     private Canvas canvas;
     @FXML
@@ -48,6 +63,14 @@ public class Controller {
         renderer = new GraphRenderer(canvas, graph);
         renderer.redraw();
         canvasContextMenu = new CanvasContextMenu();
+        ((NewEdgeMode) MouseModes.ADD_UNDIRECTED_EDGE.getHandlers()).setController(this);
+        ((NewEdgeMode) MouseModes.ADD_DIRECTED_EDGE.getHandlers()).setController(this);
+        buttons = new HashMap<>();
+        buttons.put(MouseModes.MOVE,MButton);
+        buttons.put(MouseModes.ADD_DIRECTED_EDGE,DEButton);
+        buttons.put(MouseModes.ADD_UNDIRECTED_EDGE,UEButton);
+        buttons.put(MouseModes.ADD_VERTEX,VButton);
+        buttons.put(MouseModes.EDIT,EButton);
     }
 
     public void setStage(Stage s) {
@@ -83,6 +106,11 @@ public class Controller {
             canvasContextMenu.setDeleteDisable(true);
         });
         canvas.setOnContextMenuRequested(canvasContextMenu::show);
+    }
+
+    public void setMode(MouseModes m){
+        mode = m;
+        buttons.get(m).requestFocus();
     }
 
     private void updateUndoRedo(GTBActionEvent event) {
@@ -390,6 +418,25 @@ public class Controller {
             redoButton.setOnAction(event -> {
                 actionsManager.redo();
                 renderer.redraw();
+            });
+            undirectedEdge.setOnAction(event -> {
+                if(!(renderer.getSelectedElement() instanceof Vertex)) {
+                    event.consume();
+                    return;
+                }
+                ((NewEdgeMode) MouseModes.ADD_UNDIRECTED_EDGE.getHandlers()).setOldMode(mode);
+                ((NewEdgeMode) MouseModes.ADD_UNDIRECTED_EDGE.getHandlers()).setVertex((Vertex) renderer.getSelectedElement());
+                setMode(MouseModes.ADD_UNDIRECTED_EDGE);
+            });
+            directedEdge.setOnAction(event -> {
+                if(!(renderer.getSelectedElement() instanceof Vertex)) {
+                    event.consume();
+                    return;
+                }
+                System.out.println("dir");
+                ((NewEdgeMode) MouseModes.ADD_DIRECTED_EDGE.getHandlers()).setOldMode(mode);
+                ((NewEdgeMode) MouseModes.ADD_DIRECTED_EDGE.getHandlers()).setVertex((Vertex) renderer.getSelectedElement());
+                setMode(MouseModes.ADD_DIRECTED_EDGE);
             });
             setAutoHide(true);
         }

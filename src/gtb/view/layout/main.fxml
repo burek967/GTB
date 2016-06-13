@@ -25,7 +25,7 @@
           <children>
               <VBox maxWidth="50.0" minWidth="50.0" prefHeight="775.0" prefWidth="50.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                  <children>
-                     <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onMoveButton" prefHeight="40.0" prefWidth="40.0" styleClass="bigButton">
+                     <Button fx:id="MButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onMoveButton" prefHeight="40.0" prefWidth="40.0" styleClass="bigButton">
                          <graphic>
                              <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                                 <image>
@@ -37,7 +37,7 @@
                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                          </VBox.margin>
                      </Button>
-                     <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onNewVertexButton" prefHeight="40.0" prefWidth="40.0" styleClass="bigButton">
+                     <Button fx:id="VButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onNewVertexButton" prefHeight="40.0" prefWidth="40.0" styleClass="bigButton">
                          <graphic>
                              <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                                 <image>
@@ -49,7 +49,7 @@
                              <Insets bottom="5.0" left="5.0" right="5.0" />
                          </VBox.margin>
                      </Button>
-                     <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onNewDirectedEdgeButton" prefHeight="40.0" prefWidth="40.0" styleClass="bigButton">
+                     <Button fx:id="DEButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onNewDirectedEdgeButton" prefHeight="40.0" prefWidth="40.0" styleClass="bigButton">
                          <graphic>
                              <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                                 <image>
@@ -61,7 +61,7 @@
                              <Insets bottom="5.0" left="5.0" right="5.0" />
                          </VBox.margin>
                      </Button>
-                     <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onNewUndirectedEdgeButton" prefHeight="40.0" prefWidth="40.0" styleClass="bigButton">
+                     <Button fx:id="UEButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onNewUndirectedEdgeButton" prefHeight="40.0" prefWidth="40.0" styleClass="bigButton">
                          <graphic>
                              <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                                 <image>
@@ -73,7 +73,7 @@
                              <Insets bottom="5.0" left="5.0" right="5.0" />
                          </VBox.margin>
                      </Button>
-                     <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onEditButton" prefHeight="40.0" prefWidth="40.0" styleClass="bigButton">
+                     <Button fx:id="EButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onEditButton" prefHeight="40.0" prefWidth="40.0" styleClass="bigButton">
                          <graphic>
                              <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                                  <image>

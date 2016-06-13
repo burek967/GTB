@@ -1,5 +1,6 @@
 package gtb.controller.mouse;
 
+import gtb.controller.Controller;
 import gtb.model.*;
 import gtb.model.operations.ActionsManager;
 import gtb.model.operations.AddElementAction;
@@ -14,6 +15,8 @@ import javafx.scene.input.ScrollEvent;
 public class NewEdgeMode implements MouseMode {
     private Vertex v1;
     private boolean directed = false;
+    private Controller controller;
+    private MouseModes old = null;
 
     public NewEdgeMode(boolean directed) {
         this.directed = directed;
@@ -49,6 +52,10 @@ public class NewEdgeMode implements MouseMode {
         v1 = null;
         renderer.selectElement(null);
         renderer.redraw();
+        if(old != null) {
+            controller.setMode(old);
+            old = null;
+        }
         return new AddElementAction(e);
     }
 
@@ -66,6 +73,18 @@ public class NewEdgeMode implements MouseMode {
     public void onElementRemoved(GraphElement e) {
         if (v1 == e)
             v1 = null;
+    }
+
+    public void setController(Controller c){
+        controller = c;
+    }
+
+    public void setOldMode(MouseModes mode){
+        old = mode;
+    }
+
+    public void setVertex(Vertex V){
+        v1 = V;
     }
 
 }
