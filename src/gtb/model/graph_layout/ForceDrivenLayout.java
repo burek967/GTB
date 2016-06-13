@@ -17,7 +17,7 @@ public class ForceDrivenLayout implements GraphLayout {
     private class VertexLayoutData {
         int component = 0;
         ArrayList<Vertex> neighbours = new ArrayList<>();
-    };
+    }
     private HashMap<Vertex, VertexLayoutData> hm;
     private static final int ITERATIONS = 200;
     public void tick(Graph g) {

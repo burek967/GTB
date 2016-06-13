@@ -19,6 +19,14 @@ public class Graph implements Serializable{
         edges = new ArrayList<>();
     }
 
+    public void setLastVertexId(int lastVertexId){
+        this.lastVertexId = lastVertexId;
+    }
+
+    public int getLastVertexId(){
+        return lastVertexId;
+    }
+
     public void addVertex(Vertex v) {
         vertices.put(v, new ArrayList<>());
     }
