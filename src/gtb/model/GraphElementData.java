@@ -9,7 +9,7 @@ import java.io.Serializable;
  */
 public abstract class GraphElementData implements Serializable{
     private int id;
-    private Color color, textColor;
+    private transient Color color, textColor;
     private String label;
 
     public int getId() {
