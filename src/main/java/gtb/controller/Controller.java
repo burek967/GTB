@@ -286,6 +286,7 @@ public class Controller {
             renderer = new GraphRenderer(canvas, G);
             ForceDrivenLayout layout = new ForceDrivenLayout();
             layout.layoutGraph(G);
+            renderer.fitToScreen();
             renderer.redraw();
             actionsManager.reset(G);
         }

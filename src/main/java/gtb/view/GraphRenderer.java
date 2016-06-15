@@ -241,6 +241,35 @@ public class GraphRenderer {
     }
 
     /**
+     * Sets (initial) scale and offset such that entire graph would fit into the window.
+     * Does *not* call redraw().
+     */
+    public void fitToScreen(){
+        if(graph.getVertices().isEmpty())
+            return;
+        float minx,maxx,miny,maxy;
+        minx=maxx=graph.getVertices().get(0).getData().getPosition().getX();
+        miny=maxy=graph.getVertices().get(0).getData().getPosition().getY();
+        for(Vertex v : graph.getVertices()){
+            if(minx > v.getData().getPosition().getX())
+                minx = v.getData().getPosition().getX();
+            else if(maxx < v.getData().getPosition().getX())
+                maxx = v.getData().getPosition().getX();
+            if(miny > v.getData().getPosition().getY())
+                miny = v.getData().getPosition().getY();
+            else if(maxy < v.getData().getPosition().getY())
+                maxy = v.getData().getPosition().getY();
+        }
+        maxx -= minx;
+        maxy -= miny;
+        double newScale = Math.min((canvas.getHeight()-20)/maxy,(canvas.getWidth()-20)/maxx);
+        if(newScale < 1)
+            scale = (float)newScale;
+        xOffset = (int)((canvas.getWidth()-scale*maxx)/2-scale*minx);
+        yOffset = (int)((canvas.getHeight()-scale*maxy)/2-scale*miny);
+    }
+
+    /**
      * Returns an array of TikZ coordinates of endpoints of a given edge (with flipped Y axis).
      *
      * @param e Edge (x1, y1) -> (x2, y2)
@@ -264,7 +293,7 @@ public class GraphRenderer {
     }
 
     /**
-     * Returns three element array of TikZ coordinates of given vertex and its radius.
+     * Returns an element array of TikZ coordinates of given vertex and its radius.
      *
      * @param V Vertex (x1, y1)
      * @return Array [x1, y1, R]
