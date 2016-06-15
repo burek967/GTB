@@ -255,9 +255,9 @@ public class Controller {
         }
     }
 
-    public void exportPsTricks() {
+    public void exportTikZ() {
         FileChooser chooser = new FileChooser();
-        chooser.setTitle("Export Graph to PSTricks");
+        chooser.setTitle("Export Graph to TikZ");
         chooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Text Files", "*.tex"),
                 new FileChooser.ExtensionFilter("All Files", "*.*")
@@ -267,7 +267,7 @@ public class Controller {
         if (selected == null)
             return;
         try {
-            GraphExport.psTricksExport(renderer, new PrintWriter(selected.getAbsolutePath(),"UTF-8"));
+            GraphExport.tikzExport(renderer, new PrintWriter(selected.getAbsolutePath(),"UTF-8"));
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Export error");

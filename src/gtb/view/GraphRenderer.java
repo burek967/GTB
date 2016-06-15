@@ -241,7 +241,7 @@ public class GraphRenderer {
     }
 
     /**
-     * Returns an array of PSTricks coordinates of endpoints of a given edge (with flipped Y axis - thanks PSTricks).
+     * Returns an array of TikZ coordinates of endpoints of a given edge (with flipped Y axis).
      *
      * @param e Edge (x1, y1) -> (x2, y2)
      * @return Array [x1, y1, x2, y2]
@@ -264,7 +264,7 @@ public class GraphRenderer {
     }
 
     /**
-     * Returns three element array of PSTricks coordinates of given vertex and its radius.
+     * Returns three element array of TikZ coordinates of given vertex and its radius.
      *
      * @param V Vertex (x1, y1)
      * @return Array [x1, y1, R]

@@ -111,7 +111,7 @@
                             <Menu mnemonicParsing="false" text="Export">
                                <items>
                                    <MenuItem mnemonicParsing="false" onAction="#exportGraph" text="To File..." />
-                                   <MenuItem mnemonicParsing="false" onAction="#exportPsTricks" text="To PSTricks..." />
+                                   <MenuItem mnemonicParsing="false" onAction="#exportTikZ" text="To TikZ..." />
                                </items>
                             </Menu>
                             <SeparatorMenuItem mnemonicParsing="false" />
