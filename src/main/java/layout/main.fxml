@@ -135,11 +135,7 @@
                                     <KeyCodeCombination alt="UP" code="R" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                                 </accelerator>
                             </MenuItem>
-                            <MenuItem fx:id="deleteButton" disable="true" mnemonicParsing="false" onAction="#removeSelectedElement" text="Delete" >
-                                <accelerator>
-                                    <KeyCodeCombination alt="UP" control="UP" meta="UP" shift="UP" shortcut="UP" code="DELETE" />
-                                </accelerator>
-                            </MenuItem>
+                            <MenuItem fx:id="deleteButton" disable="true" mnemonicParsing="false" onAction="#removeSelectedElement" text="Delete" />
                         </items>
                      </Menu>
                      <Menu mnemonicParsing="false" text="Help">
