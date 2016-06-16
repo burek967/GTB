@@ -8,6 +8,10 @@
     <artifactId>gtb</artifactId>
     <version>0.1a-SNAPSHOT</version>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
     <build>
         <plugins>
             <plugin>
@@ -30,14 +34,6 @@
                             <mainClass>gtb.Main</mainClass>
                         </manifest>
                     </archive>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>com.zenjava</groupId>
-                <artifactId>javafx-maven-plugin</artifactId>
-                <version>8.5.0</version>
-                <configuration>
-                    <mainClass>gtb.Main</mainClass>
                 </configuration>
             </plugin>
         </plugins>
