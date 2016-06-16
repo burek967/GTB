@@ -141,7 +141,7 @@ public class Controller {
         d.getDialogPane().getButtonTypes().add(ButtonType.OK);
         d.initStyle(StageStyle.DECORATED);
         d.setTitle("GTB");
-        d.setHeaderText("Graph Toolbox");
+        d.setHeaderText("Graph Toolbox v0.1a");
         d.setContentText(" Litwo! Ojczyzno moja! ty jesteś jak zdrowie;\n" +
                 "Ile cię trzeba cenić, ten tylko się dowie\n" +
                 "Kto cię stracił. Dziś piękność twą w całéj ozdobie\n" +
